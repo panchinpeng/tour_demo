@@ -1,4 +1,4 @@
-export default function ({ $axios, redirect }) {
+export default function({ $axios }) {
   //Authorization
-    $axios.setHeader('Content-Type', 'application/json')
-  }
+  $axios.setHeader("Content-Type", "application/json")
+}

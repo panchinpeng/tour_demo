@@ -1,10 +1,10 @@
 <template>
   <div class="contain bg-wrap">
-    <nuxt></nuxt>
+    <nuxt />
   </div>
 </template>
 <style scoped>
 .bg-wrap {
-  background-image: url('/bg.jpg')
+  background-image: url("/bg.jpg");
 }
 </style>
