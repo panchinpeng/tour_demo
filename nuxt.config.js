@@ -27,7 +27,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["~/plugins/axios"],
+  plugins: ["~/plugins/axios", "~/plugins/bootstrap-vue"],
   /*
    ** Nuxt.js dev-modules
    */
@@ -37,9 +37,9 @@ export default {
    */
   modules: [
     // Doc: https://bootstrap-vue.js.org
-    "bootstrap-vue/nuxt",
     "@nuxtjs/axios",
     "@nuxtjs/proxy"
+    // "bootstrap-vue/nuxt"
   ],
   proxy: {
     "/XMLReleaseALL_public": {

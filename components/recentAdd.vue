@@ -1,6 +1,9 @@
 <template>
-  <div class="contain">
-    <nuxt />
+  <div>
+    chlid
   </div>
 </template>
+<script>
+export default {}
+</script>
 <style scoped></style>

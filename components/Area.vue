@@ -1,13 +1,34 @@
 <template>
-  <div>
-    test
+  <div class="bg-wrap">
+    <b-input-group
+      v-for="size in ['lg']"
+      :key="size"
+      :size="size"
+      class="mb-3"
+      prepend="城市: "
+    >
+      <b-form-input />
+      <b-input-group-append>
+        <b-button size="sm" text="Button" variant="success">
+          Button
+        </b-button>
+      </b-input-group-append>
+    </b-input-group>
   </div>
 </template>
 <script>
+// import { BAlert } from "bootstrap-vue"
 export default {
-  mounted() {
-    this.$store.dispatch("syncAttractions")
+  computed: {
+    areas() {
+      return this.$store.getters.areas
+    }
   }
 }
 </script>
-<style scoped></style>
+<style>
+.center-area {
+  max-width: 900px;
+  margin: auto;
+}
+</style>
