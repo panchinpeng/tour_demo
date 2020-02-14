@@ -3,4 +3,8 @@
     <nuxt />
   </div>
 </template>
-<style scoped></style>
+<style>
+.search-wrap {
+  background-color: #0071d5;
+}
+</style>

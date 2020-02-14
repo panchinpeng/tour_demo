@@ -1,11 +1,7 @@
 <template>
-  <b-container class="p-1">
-    <b-row>
-      <b-col>
-        <Area />
-      </b-col>
-    </b-row>
-  </b-container>
+  <div class="search-wrap">
+    <Area />
+  </div>
 </template>
 
 <script>
