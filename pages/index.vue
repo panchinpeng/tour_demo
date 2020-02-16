@@ -1,16 +1,18 @@
 <template>
-  <div class="search-wrap">
+  <div>
     <Area />
+    <RdSearch />
   </div>
 </template>
 
 <script>
 import Area from "~/components/area.vue"
-// import RecentAdd from "~/components/recentAdd.vue"
+import RdSearch from "~/components/RdSearch.vue"
 
 export default {
   components: {
-    Area
+    Area,
+    RdSearch
     // RecentAdd
   },
   mounted() {
