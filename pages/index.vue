@@ -1,19 +1,21 @@
 <template>
   <div>
-    <Area />
+    <KeywordSearch />
     <RdSearch />
+    <AreaSearch />
   </div>
 </template>
 
 <script>
-import Area from "~/components/area.vue"
+import KeywordSearch from "~/components/KeywordSearch.vue"
 import RdSearch from "~/components/RdSearch.vue"
+import AreaSearch from "~/components/AreaSearch.vue"
 
 export default {
   components: {
-    Area,
-    RdSearch
-    // RecentAdd
+    KeywordSearch,
+    RdSearch,
+    AreaSearch
   },
   mounted() {
     this.$store.dispatch("syncAttractions")

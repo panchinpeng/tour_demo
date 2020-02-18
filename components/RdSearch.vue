@@ -3,6 +3,9 @@
     <b-container>
       <b-row>
         <b-col>
+          <nuxt-link to="/about" class="more-link">
+            more
+          </nuxt-link>
           <h5 class="title">
             隨機景點
           </h5>
@@ -26,9 +29,13 @@
               body-class="p-1 card-body"
               title-tag="h5"
             >
-              <b-card-text>
-                {{ item.Description || item.Toldescribe }}
-              </b-card-text>
+              <OverlayScrollbarsComponent
+                :options="{ scrollbars: { autoHide: 'scroll' } }"
+              >
+                <b-card-text>
+                  {{ item.Description || item.Toldescribe }}
+                </b-card-text>
+              </OverlayScrollbarsComponent>
             </b-card>
           </b-col>
         </template>
@@ -38,7 +45,13 @@
 </template>
 
 <script>
+import "overlayscrollbars/css/OverlayScrollbars.css"
+import { OverlayScrollbarsComponent } from "overlayscrollbars-vue"
+
 export default {
+  components: {
+    OverlayScrollbarsComponent
+  },
   data() {
     return {}
   },
@@ -47,6 +60,7 @@ export default {
       return this.$store.getters.randomAttractions
     }
   },
+  mounted() {},
   methods: {}
 }
 </script>
@@ -77,10 +91,19 @@ export default {
   left: 0;
   background-color: #2b5b04;
 }
+.card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .card-body {
-  height: 150px;
+  height: 190px;
 }
 .card-text {
-  height: 110px;
+  height: 150px;
+  /* overflow: auto; */
+}
+.more-link {
+  float: right;
 }
 </style>
