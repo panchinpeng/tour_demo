@@ -91,6 +91,11 @@ export default {
   left: 0;
   background-color: #2b5b04;
 }
+.card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .card-body {
   height: 190px;
 }
