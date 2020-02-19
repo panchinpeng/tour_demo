@@ -74,23 +74,7 @@ export default {
     flex-basis: 100% !important;
   }
 }
-.title {
-  color: var(--purple);
-  transform: skewX(-20deg);
-  border-bottom: 1px solid #00000026;
-  padding-bottom: 10px;
-  position: relative;
-}
-.title::after {
-  content: "";
-  position: absolute;
-  display: block;
-  width: 120px;
-  height: 5px;
-  bottom: -5px;
-  left: 0;
-  background-color: #2b5b04;
-}
+
 .card-title {
   overflow: hidden;
   text-overflow: ellipsis;

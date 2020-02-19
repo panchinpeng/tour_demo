@@ -22,7 +22,8 @@
     "overlayscrollbars": "^1.10.3",
     "overlayscrollbars-vue": "^0.2.1",
     "postcss": "^7.0.26",
-    "postcss-loader": "^3.0.0"
+    "postcss-loader": "^3.0.0",
+    "vue-carousel": "^0.18.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
