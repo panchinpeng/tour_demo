@@ -15,6 +15,9 @@
   padding: 15px 0;
   background: linear-gradient(45deg, #2fdbd9e0, #8eca304d);
 }
+.hot-wrap {
+  padding: 15px 0;
+}
 .title {
   color: var(--purple);
   transform: skewX(-20deg);
