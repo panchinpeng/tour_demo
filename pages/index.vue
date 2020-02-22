@@ -4,6 +4,7 @@
     <RdSearch />
     <AreaSearch />
     <HotComment />
+    <Service />
   </div>
 </template>
 
@@ -12,13 +13,15 @@ import KeywordSearch from "~/components/KeywordSearch.vue"
 import RdSearch from "~/components/RdSearch.vue"
 import AreaSearch from "~/components/AreaSearch.vue"
 import HotComment from "~/components/HotComment.vue"
+import Service from "~/components/Service.vue"
 
 export default {
   components: {
     KeywordSearch,
     RdSearch,
     AreaSearch,
-    HotComment
+    HotComment,
+    Service
   },
   mounted() {
     this.$store.dispatch("syncAttractions")

@@ -18,6 +18,9 @@
 .hot-wrap {
   padding: 15px 0;
 }
+.service-wrap {
+  padding: 15px 0;
+}
 .title {
   color: var(--purple);
   transform: skewX(-20deg);
