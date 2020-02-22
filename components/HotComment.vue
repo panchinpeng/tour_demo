@@ -1,5 +1,5 @@
 <template>
-  <div class="hot-wrap">
+  <div ref="hotWrap" class="hot-wrap">
     <b-container>
       <b-row>
         <b-col>
@@ -21,10 +21,7 @@
                   <div
                     v-for="item in comments"
                     :key="item.id"
-                    :style="{
-                      left: (item.id - 1) * 160 + 'px',
-                      top: item.id % 2 === 0 ? '-146px' : '50px'
-                    }"
+                    :style="positionCommentPos(item.id)"
                     :class="[
                       'comment-box',
                       item.id % 2 === 0 ? 'top-comment' : 'bottom-comment'
@@ -110,7 +107,8 @@ export default {
       spacePeriod: 0,
       popupName: "msg-model",
       selectTime: "",
-      selectContent: ""
+      selectContent: "",
+      slideLeft: false
     }
   },
   computed: {
@@ -118,15 +116,40 @@ export default {
       return this.comments.length * 160
     }
   },
-  mounted() {},
+  mounted() {
+    window.addEventListener("scroll", () => {
+      // console.log(
+      //   window.scrollY,
+      //   this.$refs["hotWrap"].offsetTop - 200,
+      //   this.slideLeft
+      // )
+      if (
+        window.scrollY > this.$refs["hotWrap"].offsetTop - 200 &&
+        !this.slideLeft
+      ) {
+        this.slideLeft = true
+      }
+    })
+  },
   methods: {
     showMsgBox(id) {
-      console.log(id)
       const findComment = this.comments.find(item => item.id === id * 1)
       this.selectTime = findComment.d
       this.selectContent = findComment.content
       this.id = id
       this.$bvModal.show(this.popupName)
+    },
+    positionCommentPos(idx) {
+      if (this.slideLeft) {
+        return {
+          left: (idx - 1) * 160 + "px",
+          top: idx % 2 === 0 ? "-146px" : "50px"
+        }
+      } else {
+        return {
+          left: "-1000px"
+        }
+      }
     }
   }
 }
@@ -170,16 +193,14 @@ export default {
   transform: rotateY(20deg);
 }
 
-.line-times > div {
-  position: absolute;
-}
-
 .comment-box {
   border: 1px solid #ccc;
+  position: absolute;
   padding: 5px;
   width: 160px;
   height: 100px;
   border-radius: 10px;
+  transition: all 1.5s;
 }
 .comment-wrap {
   margin: 30px 0;
