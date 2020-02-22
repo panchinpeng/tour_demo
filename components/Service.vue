@@ -71,14 +71,14 @@ export default {
   methods: {
     listenerScroll() {
       let videoDom = this.$refs["video"]
-      if (
-        window.scrollY + window.screen.height >
-        videoDom.offsetParent.offsetTop
-      ) {
-        console.log(window.scrollY, videoDom.offsetTop)
+      let videoOffset = videoDom.getBoundingClientRect()
+      let viewH = Math.max(
+        document.documentElement.clientHeight,
+        window.innerHeight
+      )
+      if (videoOffset.top - viewH < 20) {
         videoDom.currentTime = 10
         videoDom.play()
-
         window.removeEventListener("scroll", this.listenerScroll)
       }
     }

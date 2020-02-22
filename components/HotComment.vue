@@ -117,19 +117,7 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener("scroll", () => {
-      // console.log(
-      //   window.scrollY,
-      //   this.$refs["hotWrap"].offsetTop - 200,
-      //   this.slideLeft
-      // )
-      if (
-        window.scrollY > this.$refs["hotWrap"].offsetTop - 200 &&
-        !this.slideLeft
-      ) {
-        this.slideLeft = true
-      }
-    })
+    window.addEventListener("scroll", this.slideMessage)
   },
   methods: {
     showMsgBox(id) {
@@ -149,6 +137,20 @@ export default {
         return {
           left: "-1000px"
         }
+      }
+    },
+    slideMessage() {
+      let domOffset = this.$refs["hotWrap"].getBoundingClientRect()
+      const viewH = Math.max(
+        document.documentElement.clientHeight,
+        window.innerHeight
+      )
+      if (
+        domOffset.top - viewH < (domOffset.height / 3) * -1 &&
+        !this.slideLeft
+      ) {
+        this.slideLeft = true
+        window.removeEventListener("scroll", this.slideMessage)
       }
     }
   }

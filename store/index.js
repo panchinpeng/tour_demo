@@ -31,6 +31,9 @@ export const getters = {
     returnData = [...new Set(returnData)]
     return returnData
   },
+  loadedAttraction(state) {
+    return state.attractions.length > 0
+  },
   randomAttractions(state) {
     if (state.attractions.length === 0) {
       return []

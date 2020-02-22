@@ -1,10 +1,24 @@
 <template>
   <div>
     <KeywordSearch />
-    <RdSearch />
-    <AreaSearch />
-    <HotComment />
-    <Service />
+    <div v-show="$store.getters.loadedAttraction">
+      <RdSearch />
+      <AreaSearch />
+      <HotComment />
+      <Service />
+    </div>
+    <div
+      v-show="!$store.getters.loadedAttraction"
+      style="display: flex;height: 80vh;justify-content: center;align-items: center"
+    >
+      <b-spinner style="width: 3rem; height: 3rem;" label="Large Spinner" />
+      <b-spinner
+        variant="success"
+        style="width: 3rem; height: 3rem;"
+        label="Large Spinner"
+        type="grow"
+      />
+    </div>
   </div>
 </template>
 
@@ -25,6 +39,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("syncAttractions")
+    console.log(this.$store.getters.loadedAttraction)
   }
 }
 </script>
