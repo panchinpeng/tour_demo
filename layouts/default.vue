@@ -21,6 +21,13 @@
 .service-wrap {
   padding: 15px 0;
 }
+
+.footer-wrap {
+  margin-top: -100px;
+  height: 100px;
+  background-color: #000;
+  color: #fff;
+}
 .title {
   color: var(--purple);
   transform: skewX(-20deg);

@@ -88,16 +88,21 @@ export default {
 
 <style>
 .video-background {
-  position: absolute;
-  right: 0;
-  bottom: 0;
   min-width: 100%;
   min-height: 100%;
-  top: 0;
-  left: 0;
   opacity: 0.5;
+}
+.front-layout {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  right: 0;
+  font-size: 16px;
 }
 .service-wrap {
   position: relative;
+  padding-bottom: 0;
+  /* 解決影片下方多一塊空白 */
+  font-size: 0;
 }
 </style>

@@ -6,6 +6,7 @@
       <AreaSearch />
       <HotComment />
       <Service />
+      <Footer />
     </div>
     <div
       v-show="!$store.getters.loadedAttraction"
@@ -28,6 +29,7 @@ import RdSearch from "~/components/RdSearch.vue"
 import AreaSearch from "~/components/AreaSearch.vue"
 import HotComment from "~/components/HotComment.vue"
 import Service from "~/components/Service.vue"
+import Footer from "~/components/Footer.vue"
 
 export default {
   components: {
@@ -35,7 +37,8 @@ export default {
     RdSearch,
     AreaSearch,
     HotComment,
-    Service
+    Service,
+    Footer
   },
   mounted() {
     this.$store.dispatch("syncAttractions")
