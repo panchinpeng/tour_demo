@@ -67,5 +67,39 @@ export default {
   border: 2px solid #aaa;
   box-shadow: 1px 1px 2px 1px #aaa;
   margin-bottom: 15px;
+  cursor: pointer;
+  position: relative;
+}
+.city-wrap:hover {
+  animation: wheel 0.5s;
+}
+
+.city-wrap::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 4px;
+  background-color: transparent;
+  position: absolute;
+  bottom: -15px;
+  left: 40%;
+  z-index: 22;
+  transition: all 2s;
+}
+
+.city-wrap:hover::after {
+  background-color: #000;
+}
+
+@keyframes wheel {
+  0% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
 }
 </style>
