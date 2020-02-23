@@ -1,4 +1,4 @@
-# hotal
+# hotal demo
 
 > My splendiferous Nuxt.js project
 
