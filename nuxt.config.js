@@ -3,6 +3,12 @@ const routerBase =
     ? {
         router: {
           base: "/tour_demo/"
+        },
+        proxy: {
+          "/scenic_spot_C_f.json": {
+            target: "https://panchinpeng.github.io/tour_demo/",
+            changeOrigin: true
+          }
         }
       }
     : {}
