@@ -12,10 +12,8 @@ export const mutations = {
 
 export const actions = {
   async syncAttractions({ commit }) {
-    // let datas = await this.$axios.$get(
-    //   "/XMLReleaseALL_public/scenic_spot_C_f.json"
-    // )
     let datas = await this.$axios.$get("/scenic_spot_C_f.json")
+    // let datas = await this.$axios.$get("/scenic_spot_C_f.json")
 
     commit(ActionTypes.SYNCATTRACTIONS, datas)
   }

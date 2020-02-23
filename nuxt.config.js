@@ -4,6 +4,10 @@ const routerBase =
         router: {
           base: "/tour_demo/"
         },
+        axios: {
+          proxy: true // Can be also an object with default options
+        },
+
         proxy: {
           "/scenic_spot_C_f.json": {
             target: "https://panchinpeng.github.io/tour_demo/",
@@ -57,12 +61,7 @@ export default {
     "@nuxtjs/proxy"
     // "bootstrap-vue/nuxt"
   ],
-  proxy: {
-    "/XMLReleaseALL_public": {
-      target: "https://gis.taiwan.net.tw/",
-      changeOrigin: true
-    }
-  },
+
   /*
    ** Build configuration
    */
