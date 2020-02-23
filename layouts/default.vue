@@ -20,6 +20,7 @@
 }
 .service-wrap {
   padding: 15px 0;
+  overflow-x: hidden;
 }
 
 .footer-wrap {
