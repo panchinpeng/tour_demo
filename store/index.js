@@ -6,7 +6,22 @@ export const state = () => ({
 
 export const mutations = {
   [ActionTypes.SYNCATTRACTIONS](state, datas) {
-    state.attractions = datas.XML_Head.Infos.Info
+    // state.attractions = datas.XML_Head.Infos.Info
+    const tmp = datas.XML_Head.Infos.Info
+    let tmp2 = []
+    tmp.forEach((item, index) => {
+      tmp2[index] = item.Changetime
+    })
+
+    let tmp3 = tmp2.slice(0).sort((a, b) => Date.parse(b) - Date.parse(a))
+
+    let tmp4 = []
+    tmp3.forEach(item => {
+      const tmpIndex = tmp2.indexOf(item)
+      tmp4.push(tmp[tmpIndex])
+      tmp2[tmpIndex] = null
+    })
+    state.attractions = tmp4
   }
 }
 
