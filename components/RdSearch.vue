@@ -6,6 +6,7 @@
           <nuxt-link to="/about" class="more-link">
             more
           </nuxt-link>
+
           <h5 class="title">
             隨機景點
           </h5>
@@ -88,6 +89,8 @@ export default {
   /* overflow: auto; */
 }
 .more-link {
-  float: right;
+  position: absolute;
+  right: 50px;
+  z-index: 33;
 }
 </style>

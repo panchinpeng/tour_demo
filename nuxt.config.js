@@ -59,7 +59,8 @@ export default {
   modules: [
     // Doc: https://bootstrap-vue.js.org
     "@nuxtjs/axios",
-    "@nuxtjs/proxy"
+    "@nuxtjs/proxy",
+    "nuxt-fontawesome"
     // "bootstrap-vue/nuxt"
   ],
 
@@ -81,5 +82,13 @@ export default {
         })
       }
     }
+  },
+  fontawesome: {
+    imports: [
+      {
+        set: "@fortawesome/free-solid-svg-icons",
+        icons: ["fas"]
+      }
+    ]
   }
 }
