@@ -43,6 +43,12 @@ export default {
     action: {
       type: String,
       default: ""
+    },
+    searchData: {
+      type: Array,
+      default: function() {
+        return []
+      }
     }
   },
   data() {
@@ -51,7 +57,8 @@ export default {
       page: 1,
       loadFinishData: [],
       tempSortResult: [],
-      showScrollTopBtn: false
+      showScrollTopBtn: false,
+      actionData: this.$props.action
     }
   },
   watch: {
@@ -61,23 +68,27 @@ export default {
         if (newValue > 2) {
           this.showScrollTopBtn = true
         }
-        this.fetchData()
+        this.fetchData(this.actionData)
       }
     }
   },
   mounted() {
-    this.$props && this.$props.action && this.fetchData()
-    window.addEventListener("scroll", () => {
+    this.fetchData(this.actionData)
+    window.addEventListener("scroll", this.addScrollEvent)
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.addScrollEvent)
+  },
+
+  methods: {
+    addScrollEvent() {
       let bottomWrap = this.$refs["bottomWrap"]
       let nowTops = bottomWrap && bottomWrap.getBoundingClientRect().top
       if (nowTops < window.innerHeight + 30) {
         this.page = this.page + 1
       }
-    })
-  },
-  methods: {
-    fetchData() {
-      const { action } = this.$props
+    },
+    fetchData(action) {
       switch (action) {
         case "hot":
           this.loadFinishData = this.loadFinishData.concat(
@@ -123,7 +134,17 @@ export default {
           this.loadFinishData = this.loadFinishData.concat(tmpAry4)
 
           break
+        case "search-keyword":
+          // eslint-disable-next-line no-case-declarations
+          let pagesAry = this.$props.searchData.slice(
+            (this.page - 1) * 10,
+            this.page * 10
+          )
+          console.log("loading..", pagesAry)
+          this.loadFinishData = this.loadFinishData.concat(pagesAry)
+          break
       }
+
       this.loading = false
     }
   }

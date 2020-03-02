@@ -119,6 +119,9 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.slideMessage)
   },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.slideMessage)
+  },
   methods: {
     showMsgBox(id) {
       const findComment = this.comments.find(item => item.id === id * 1)
@@ -140,7 +143,8 @@ export default {
       }
     },
     slideMessage() {
-      let domOffset = this.$refs["hotWrap"].getBoundingClientRect()
+      let domOffset =
+        this.$refs["hotWrap"] && this.$refs["hotWrap"].getBoundingClientRect()
       const viewH = Math.max(
         document.documentElement.clientHeight,
         window.innerHeight

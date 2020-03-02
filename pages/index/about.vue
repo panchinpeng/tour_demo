@@ -30,7 +30,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .nuxt-link-active {
   border: 1px solid #ccc !important;
 }

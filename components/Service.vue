@@ -68,6 +68,9 @@ export default {
     videoDom.muted = true
     window.addEventListener("scroll", this.listenerScroll)
   },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.listenerScroll)
+  },
   methods: {
     listenerScroll() {
       let videoDom = this.$refs["video"]

@@ -1,7 +1,7 @@
 <template>
   <div>
     <KeywordSearch />
-    <nuxt-child keep-alive />
+    <nuxt-child />
   </div>
 </template>
 
