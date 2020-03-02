@@ -11,14 +11,9 @@
               class="my-3"
               prepend="城市: "
             >
-              <b-form-input v-model="searchKeyword" />
+              <b-form-input />
               <b-input-group-append>
-                <b-button
-                  size="sm"
-                  text="Button"
-                  variant="success"
-                  @click="search"
-                >
+                <b-button size="sm" text="Button" variant="success">
                   搜尋
                 </b-button>
               </b-input-group-append>
@@ -32,14 +27,9 @@
 <script>
 // import { BAlert } from "bootstrap-vue"
 export default {
-  data() {
-    return {
-      searchKeyword: ""
-    }
-  },
-  methods: {
-    search() {
-      this.$router.push("/search/" + this.searchKeyword)
+  computed: {
+    areas() {
+      return this.$store.getters.areas
     }
   }
 }
