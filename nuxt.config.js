@@ -5,13 +5,13 @@ const routerBase =
           base: "/tour_demo/"
         },
         axios: {
-          proxy: true // Can be also an object with default options
-          // prefix: "/tour_demo/"
+          proxy: true, // Can be also an object with default options
+          prefix: "/tour_demo"
         },
 
         proxy: {
           "/scenic_spot_C_f.json": {
-            target: "https://panchinpeng.github.io/tour_demo/",
+            target: "https://panchinpeng.github.io/",
             changeOrigin: true
           }
         }
