@@ -9,7 +9,14 @@
           v-for="(loopData, index) in loadFinishData"
           :key="index"
           tag="li"
-          class="my-4 flex-column flex-md-row "
+          :class="[
+            'my-4',
+            'flex-column',
+            'flex-md-row',
+            activeItemIndex === index && 'active-item'
+          ]"
+          :data-title="loopData.Name"
+          @click="prepareLinkOther(index)"
         >
           <template v-slot:aside>
             <img src="https://picsum.photos/150" width="100%" />
@@ -25,7 +32,13 @@
             </b-badge>
           </h3>
           <p>{{ loopData.Toldescribe }}</p>
-
+          <a
+            v-if="activeItemIndex === index"
+            class="hover-link"
+            :href="'https://www.google.com/search?q=' + loopData.Name"
+          >
+            <font-awesome-icon icon="neuter" />
+          </a>
           <!-- b-[Optional: add media children here for nesting] -->
         </b-media>
       </ul>
@@ -58,7 +71,8 @@ export default {
       loadFinishData: [],
       tempSortResult: [],
       showScrollTopBtn: false,
-      actionData: this.$props.action
+      actionData: this.$props.action,
+      activeItemIndex: null
     }
   },
   watch: {
@@ -81,6 +95,9 @@ export default {
   },
 
   methods: {
+    prepareLinkOther(index) {
+      this.activeItemIndex = index
+    },
     addScrollEvent() {
       let bottomWrap = this.$refs["bottomWrap"]
       let nowTops = bottomWrap && bottomWrap.getBoundingClientRect().top
@@ -176,9 +193,45 @@ export default {
   padding-bottom: 5px;
   border-bottom: 1px solid mediumvioletred;
 }
+.hover-link {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  background-color: #e0dced;
+  color: #000;
+  font-size: 40px;
+}
+.hover-link:hover,
+.hover-link:focus {
+  text-decoration: none;
+}
+.active-item {
+  position: relative;
+  border-radius: 10px;
+}
 @media (max-width: 768px) {
   .media > div {
     width: 100%;
   }
+}
+
+.active-item::after {
+  content: "";
+  background-color: rgba(100, 100, 100, 0.8);
+  border-radius: 10px;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: block;
+  position: absolute;
 }
 </style>
