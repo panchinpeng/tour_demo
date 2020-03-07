@@ -39,6 +39,9 @@ export default {
   },
   methods: {
     search() {
+      if (!this.keywordSearch) {
+        return
+      }
       this.$router.push("/search/" + this.keywordSearch)
     }
   }
