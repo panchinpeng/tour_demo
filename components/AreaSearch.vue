@@ -12,9 +12,9 @@
         <b-col class="d-none d-md-block">
           <carousel :per-page="6" pagination-active-color="#aaa">
             <Slide v-for="item in areas" :key="item">
-              <div class="city-wrap">
+              <nuxt-link :to="'/search/' + item" class="city-wrap">
                 {{ item }}
-              </div>
+              </nuxt-link>
             </Slide>
           </carousel>
         </b-col>
