@@ -48,7 +48,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["~/plugins/axios", "~/plugins/bootstrap-vue"],
+  plugins: [
+    "~/plugins/axios",
+    "~/plugins/bootstrap-vue",
+    "~/plugins/firebase.js"
+  ],
   /*
    ** Nuxt.js dev-modules
    */
