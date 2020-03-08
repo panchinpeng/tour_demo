@@ -1,8 +1,20 @@
 import { fdb } from "~/plugins/firebase.js"
+import firebase from "firebase/app"
+import "firebase/auth"
+const checkLogin = () => {
+  const isLogin = firebase.auth().currentUser
+  return !!isLogin
+}
+
+export const dbUserLogined = () => {
+  return checkLogin()
+}
 
 export const fbSetComment = comment => {
-  const ref = fdb.ref("commentReply")
-  ref.push(comment)
+  if (checkLogin()) {
+    const ref = fdb.ref("commentReply")
+    ref.push(comment)
+  }
 }
 export const fbGetReply = id => {
   let returnData = []
@@ -11,6 +23,7 @@ export const fbGetReply = id => {
     .orderByChild("id")
     .equalTo(id)
     .on("child_added", snapshot => {
+      console.log(snapshot)
       returnData.push({ key: snapshot.key, ...snapshot.val() })
     })
 

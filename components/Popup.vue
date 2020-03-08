@@ -51,7 +51,11 @@
   </b-modal>
 </template>
 <script>
-import { fbSetComment, fbGetReply } from "~/components/firebase/commentData.js"
+import {
+  fbSetComment,
+  fbGetReply,
+  dbUserLogined
+} from "~/components/firebase/commentData.js"
 export default {
   props: {
     boxName: {
@@ -84,6 +88,10 @@ export default {
     }
   },
   updated() {
+    if (!this.$store.state.authentication && !dbUserLogined()) {
+      this.$router.replace("/login")
+      return
+    }
     this.replys = fbGetReply(this.id)
   },
   methods: {
@@ -106,10 +114,6 @@ export default {
       )
     },
     sendMsg() {
-      // this.replys.push({
-      //   d: this.getNowDate(),
-      //   msg: this.message
-      // })
       fbSetComment({
         d: this.getNowDate(),
         msg: this.message,
