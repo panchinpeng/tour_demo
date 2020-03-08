@@ -127,6 +127,7 @@ export default {
 <style>
 .comment-content {
   font-size: 16px;
+  text-align: left;
 }
 .comment-time {
   font-size: 14px;
