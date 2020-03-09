@@ -102,6 +102,7 @@ export default {
       if (num < 10) {
         return "0" + num
       }
+      return num
     },
     getNowDate() {
       const d = new Date()
