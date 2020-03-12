@@ -14,6 +14,7 @@
             <OverlayScrollbarsComponent>
               <div class="comment-wrap">
                 <div
+                  v-if="comments"
                   ref="lineTimes"
                   class="line-times"
                   :style="{ width: timeLineLength + 'px' }"
@@ -28,7 +29,10 @@
                     ]"
                     @click="showMsgBox(item.id)"
                   >
-                    {{ item.content }}
+                    <div style="height: 100%; width: 100%; overflow: hidden; ">
+                      {{ item.msg.substr(0, 40) }}
+                      <span v-if="item.msg.length > 40">...</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -50,6 +54,8 @@
 <script>
 import Popup from "~/components/Popup.vue"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-vue"
+
+import { fbGetRealCommentData } from "~/components/firebase/commentData.js"
 export default {
   components: {
     Popup,
@@ -57,53 +63,7 @@ export default {
   },
   data() {
     return {
-      comments: [
-        {
-          id: 1,
-          d: "2019-01-05 11:11:11",
-          content: "this is so cool"
-        },
-        {
-          id: 2,
-          d: "2019-01-20 11:11:11",
-          content: "this is so cool"
-        },
-        {
-          id: 3,
-          d: "2019-01-30 11:11:11",
-          content: "this is so cool"
-        },
-        {
-          id: 4,
-          d: "2019-01-30 11:11:11",
-          content: "this is so cool"
-        },
-        {
-          id: 5,
-          d: "2019-01-30 11:11:11",
-          content: "this is so cool"
-        },
-        {
-          id: 6,
-          d: "2019-01-30 11:11:11",
-          content: "this is so cool"
-        },
-        {
-          id: 7,
-          d: "2019-01-30 11:11:11",
-          content: "我是誰!!!"
-        },
-        {
-          id: 8,
-          d: "2019-01-30 11:11:11",
-          content: "this is so cool"
-        },
-        {
-          id: 9,
-          d: "2019-01-30 11:11:11",
-          content: "this is so cool"
-        }
-      ],
+      comments: [],
       spacePeriod: 0,
       popupName: "msg-model",
       selectTime: "",
@@ -113,10 +73,12 @@ export default {
   },
   computed: {
     timeLineLength() {
-      return this.comments.length * 160
+      return this.comments.length * 190
     }
   },
   mounted() {
+    this.comments = fbGetRealCommentData()
+    console
     window.addEventListener("scroll", this.slideMessage)
   },
   beforeDestroy() {
@@ -126,14 +88,14 @@ export default {
     showMsgBox(id) {
       const findComment = this.comments.find(item => item.id === id * 1)
       this.selectTime = findComment.d
-      this.selectContent = findComment.content
+      this.selectContent = findComment.msg
       this.id = id
       this.$bvModal.show(this.popupName)
     },
     positionCommentPos(idx) {
       if (this.slideLeft) {
         return {
-          left: (idx - 1) * 160 + "px",
+          left: (idx - 1) * 190 + "px",
           top: idx % 2 === 0 ? "-146px" : "50px"
         }
       } else {
@@ -173,9 +135,9 @@ export default {
   content: "";
   position: absolute;
   left: 50%;
-  height: 50px;
+  height: 38px;
   width: 1px;
-  bottom: -50px;
+  bottom: -38px;
   background: #aaa;
 }
 
@@ -203,8 +165,8 @@ export default {
   border: 1px solid #ccc;
   position: absolute;
   padding: 5px;
-  width: 160px;
-  height: 100px;
+  width: 190px;
+  height: 111px;
   border-radius: 10px;
   transition: all 1.5s;
 }
@@ -214,5 +176,10 @@ export default {
   display: flex;
   align-items: center;
   /* overflow: auto; */
+}
+
+.msg-wrap {
+  width: 100%;
+  height: 100%;
 }
 </style>

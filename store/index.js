@@ -1,7 +1,8 @@
 import * as ActionTypes from "~/store/action-type"
 
 export const state = () => ({
-  attractions: []
+  attractions: [],
+  authentication: false
 })
 
 export const mutations = {
@@ -22,6 +23,9 @@ export const mutations = {
       tmp2[tmpIndex] = null
     })
     state.attractions = tmp4
+  },
+  [ActionTypes.SETLOGINSTATUS](state, data) {
+    state.authentication = data
   }
 }
 
@@ -31,6 +35,10 @@ export const actions = {
     // let datas = await this.$axios.$get("/scenic_spot_C_f.json")
 
     commit(ActionTypes.SYNCATTRACTIONS, datas)
+  },
+  setLoginStatus({ commit }, status) {
+    status = !!status
+    commit(ActionTypes.SETLOGINSTATUS, status)
   }
 }
 export const getters = {
