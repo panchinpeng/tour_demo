@@ -2,8 +2,9 @@
   <footer class="footer-wrap">
     <b-container>
       <b-row>
-        <b-col>
-          footer
+        <b-col class="d-flex justify-content-end align-items-center user-icon">
+          <font-awesome-icon icon="users" />
+          <span class="ml-2">{{ $store.state.counter }}</span>
         </b-col>
       </b-row>
     </b-container>
@@ -14,4 +15,8 @@
 export default {}
 </script>
 
-<style></style>
+<style>
+.user-icon {
+  font-size: 1.4rem;
+}
+</style>

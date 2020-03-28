@@ -45,3 +45,20 @@ export const fbGetRealCommentData = () => {
   })
   return returnData
 }
+
+export const fbGetReadCount = () => {
+  const ref = fdb.ref("user-test")
+  ref.on("value", snapshot => {
+    return snapshot.val()
+  })
+}
+
+export const fbSetReadCountAddOne = () => {
+  const ref = fdb.ref("user-test")
+  return new Promise(resolve => {
+    ref.once("value", snapshot => {
+      ref.set(snapshot.val() + 1)
+      resolve(snapshot.val() + 1)
+    })
+  })
+}
