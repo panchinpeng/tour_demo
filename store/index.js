@@ -2,7 +2,8 @@ import * as ActionTypes from "~/store/action-type"
 
 export const state = () => ({
   attractions: [],
-  authentication: false
+  authentication: false,
+  counter: 0
 })
 
 export const mutations = {
@@ -26,6 +27,9 @@ export const mutations = {
   },
   [ActionTypes.SETLOGINSTATUS](state, data) {
     state.authentication = data
+  },
+  [ActionTypes.SETUSERCOUNTER](state, data) {
+    state.counter = data
   }
 }
 
@@ -39,6 +43,9 @@ export const actions = {
   setLoginStatus({ commit }, status) {
     status = !!status
     commit(ActionTypes.SETLOGINSTATUS, status)
+  },
+  setUserCounter({ commit }, data) {
+    data * 1 > 0 && commit(ActionTypes.SETUSERCOUNTER, data)
   }
 }
 export const getters = {

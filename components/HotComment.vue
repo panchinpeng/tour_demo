@@ -78,7 +78,6 @@ export default {
   },
   mounted() {
     this.comments = fbGetRealCommentData()
-    console
     window.addEventListener("scroll", this.slideMessage)
   },
   beforeDestroy() {
