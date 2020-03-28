@@ -21,7 +21,7 @@
           >
             <b-card
               :title="item.Name"
-              img-src="https://picsum.photos/600/300/?image=25"
+              img-src="/tour.jpg"
               :img-alt="item.Name"
               img-top
               tag="article"

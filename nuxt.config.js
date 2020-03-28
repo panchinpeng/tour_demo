@@ -94,5 +94,9 @@ export default {
         icons: ["fas"]
       }
     ]
+  },
+  env: {
+    onlineApi:
+      process.env.DEPLOY_ENV === "GH_PAGES" ? "user-release" : "user-test"
   }
 }

@@ -32,18 +32,20 @@ export const fbGetReply = id => {
 
 export const fbGetRealCommentData = () => {
   let returnData = []
-  const ref = fdb.ref("comment")
-  ref.on("value", snapshot => {
-    let commentDatas = snapshot.val()
+  return new Promise(resolve => {
+    const ref = fdb.ref("comment")
+    ref.on("value", snapshot => {
+      let commentDatas = snapshot.val()
 
-    for (const key in commentDatas) {
-      // eslint-disable-next-line no-prototype-builtins
-      if (commentDatas.hasOwnProperty(key)) {
-        returnData.push(commentDatas[key])
+      for (const key in commentDatas) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (commentDatas.hasOwnProperty(key)) {
+          returnData.push(commentDatas[key])
+        }
       }
-    }
+      resolve(returnData)
+    })
   })
-  return returnData
 }
 
 export const fbGetReadCount = () => {
@@ -54,7 +56,7 @@ export const fbGetReadCount = () => {
 }
 
 export const fbSetReadCountAddOne = () => {
-  const ref = fdb.ref("user-test")
+  const ref = fdb.ref(process.env.onlineApi)
   return new Promise(resolve => {
     ref.once("value", snapshot => {
       ref.set(snapshot.val() + 1)

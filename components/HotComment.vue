@@ -68,7 +68,8 @@ export default {
       popupName: "msg-model",
       selectTime: "",
       selectContent: "",
-      slideLeft: false
+      slideLeft: false,
+      id: 0
     }
   },
   computed: {
@@ -77,11 +78,17 @@ export default {
     }
   },
   mounted() {
-    this.comments = fbGetRealCommentData()
+    this.comments = []
+    // this.comments = fbGetRealCommentData()
     window.addEventListener("scroll", this.slideMessage)
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.slideMessage)
+  },
+  updated() {
+    if (!this.slideLeft && this.comments.length > 0) {
+      this.slideLeft = true
+    }
   },
   methods: {
     showMsgBox(id) {
@@ -103,7 +110,7 @@ export default {
         }
       }
     },
-    slideMessage() {
+    async slideMessage() {
       let domOffset =
         this.$refs["hotWrap"] && this.$refs["hotWrap"].getBoundingClientRect()
       const viewH = Math.max(
@@ -114,7 +121,7 @@ export default {
         domOffset.top - viewH < (domOffset.height / 3) * -1 &&
         !this.slideLeft
       ) {
-        this.slideLeft = true
+        this.comments = await fbGetRealCommentData()
         window.removeEventListener("scroll", this.slideMessage)
       }
     }
@@ -167,7 +174,7 @@ export default {
   width: 190px;
   height: 111px;
   border-radius: 10px;
-  transition: all 1.5s;
+  transition: all 3s;
 }
 .comment-wrap {
   margin: 30px 0;
