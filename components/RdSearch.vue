@@ -21,7 +21,7 @@
           >
             <b-card
               :title="item.Name"
-              img-src="/tour.jpg"
+              :img-src="env ? '/tour_demo/tour.jpg' : '/tour.jpg'"
               :img-alt="item.Name"
               img-top
               tag="article"
@@ -54,14 +54,18 @@ export default {
     OverlayScrollbarsComponent
   },
   data() {
-    return {}
+    return {
+      env: null
+    }
   },
   computed: {
     randomDatas() {
       return this.$store.getters.randomAttractions
     }
   },
-  mounted() {},
+  mounted() {
+    this.env = process.env.release
+  },
   methods: {}
 }
 </script>

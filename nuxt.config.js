@@ -97,6 +97,7 @@ export default {
   },
   env: {
     onlineApi:
-      process.env.DEPLOY_ENV === "GH_PAGES" ? "user-release" : "user-test"
+      process.env.DEPLOY_ENV === "GH_PAGES" ? "user-release" : "user-test",
+    release: process.env.DEPLOY_ENV === "GH_PAGES"
   }
 }
