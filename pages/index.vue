@@ -1,11 +1,13 @@
 <template>
   <div>
+    <userMenu />
     <KeywordSearch />
     <nuxt-child />
   </div>
 </template>
 
 <script>
+import userMenu from "~/components/academic/menu.vue"
 import KeywordSearch from "~/components/KeywordSearch.vue"
 import {
   fbSetReadCountAddOne
@@ -13,7 +15,8 @@ import {
 } from "~/components/firebase/commentData"
 export default {
   components: {
-    KeywordSearch
+    KeywordSearch,
+    userMenu
   },
   async created() {
     let nowCounter = await fbSetReadCountAddOne()

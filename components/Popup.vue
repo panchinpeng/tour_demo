@@ -66,9 +66,7 @@ export default {
     times: {
       default: "",
       required: true,
-      validator: function(incoming) {
-        return !isNaN(Date.parse(incoming))
-      }
+      type: String
     },
     content: {
       default: "",

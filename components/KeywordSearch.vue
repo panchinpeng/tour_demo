@@ -47,4 +47,9 @@ export default {
   }
 }
 </script>
-<style></style>
+<style>
+.bg-wrap {
+  position: relative;
+  z-index: 100;
+}
+</style>
