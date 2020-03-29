@@ -38,8 +38,7 @@
 </template>
 
 <script>
-import firebase from "firebase/app"
-import "firebase/auth"
+import { userLogin } from "~/components/firebase/userFunction"
 export default {
   data() {
     return {
@@ -49,22 +48,23 @@ export default {
     }
   },
   methods: {
+    userLoginSuccess() {
+      this.$store.dispatch("setLoginStatus", true)
+      this.$router.replace("/")
+    },
+    userLoginFail(msg) {
+      this.loginErrMsg = msg
+    },
     login() {
       if (!this.username || !this.password) {
         alert("請正確輸入帳號及密碼")
       } else {
-        firebase
-          .auth()
-          .signInWithEmailAndPassword(this.username, this.password)
-          .then(() => {
-            this.$store.dispatch("setLoginStatus", true)
-            this.$router.replace("/")
-          })
-          .catch(error => {
-            // Handle Errors here.
-            this.loginErrMsg = error.message
-            // ...
-          })
+        userLogin(
+          this.username,
+          this.password,
+          this.userLoginSuccess,
+          this.userLoginFail
+        )
       }
     }
   }
