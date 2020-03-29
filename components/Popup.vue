@@ -1,5 +1,5 @@
 <template>
-  <b-modal :id="boxName" size="sm" body-class="m-body">
+  <b-modal :id="boxName" size="sm" body-class="m-body" @hidden="resetData">
     <template v-slot:modal-title>
       評論
     </template>
@@ -77,6 +77,10 @@ export default {
       default: 0,
       required: true,
       type: Number
+    },
+    resetPopupData: {
+      required: true,
+      type: Function
     }
   },
   data() {
@@ -86,11 +90,14 @@ export default {
     }
   },
   updated() {
-    if (!this.$store.state.authentication && !dbUserLogined()) {
-      this.$router.replace("/login")
-      return
+    if (this.id > 0) {
+      console.log("popup", !this.$store.state.authentication, !dbUserLogined())
+      if (!this.$store.state.authentication && !dbUserLogined()) {
+        this.$router.replace("/login")
+        return
+      }
+      this.replys = fbGetReply(this.id)
     }
-    this.replys = fbGetReply(this.id)
   },
   methods: {
     clearMsg() {
@@ -119,6 +126,10 @@ export default {
         id: this.id
       })
       this.message = ""
+    },
+    resetData() {
+      // parent function
+      this.resetPopupData()
     }
   }
 }

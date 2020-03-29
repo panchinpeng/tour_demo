@@ -6,10 +6,14 @@
         <ul v-if="$store.state.authentication" class="user-function">
           <li>推薦景點</li>
           <li>收藏景點</li>
-          <li>登出</li>
+          <li @click="singout">
+            登出
+          </li>
         </ul>
         <ul v-else class="user-function">
-          <li>登入</li>
+          <nuxt-link to="/login" class="link-style" tag="li">
+            登入
+          </nuxt-link>
         </ul>
         <div class="close-wrap">
           <font-awesome-icon
@@ -25,6 +29,7 @@
 
 <script>
 import { dbUserLogined } from "~/components/firebase/commentData"
+import { userLogout } from "~/components/firebase/userFunction"
 export default {
   data() {
     return {
@@ -38,8 +43,16 @@ export default {
     }
   },
   methods: {
+    userLogoutCallback() {
+      this.drop = false
+      this.$store.dispatch("setLoginStatus", false)
+      alert("已成功登出")
+    },
     toggleMenu() {
       this.drop = !this.drop
+    },
+    singout() {
+      userLogout(this.userLogoutCallback)
     }
   }
 }
@@ -129,6 +142,15 @@ export default {
 .menu-icon2 {
   font-size: 1.6rem;
   color: #fff;
+  cursor: pointer;
+}
+.link-style,
+.link-style:hover {
+  color: #fff;
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
   cursor: pointer;
 }
 </style>

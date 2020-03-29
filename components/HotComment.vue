@@ -47,6 +47,7 @@
       :box-name="popupName"
       :times="selectTime || ' '"
       :content="selectContent || ' '"
+      :reset-popup-data="resetPopupData"
     />
   </div>
 </template>
@@ -124,6 +125,12 @@ export default {
         this.comments = await fbGetRealCommentData()
         window.removeEventListener("scroll", this.slideMessage)
       }
+    },
+    resetPopupData() {
+      // 避免登入登出後同時點選同一門留言，導致popup沒偵測到updated，而發生錯誤
+      this.id = 0
+      this.selectTime = ""
+      this.selectContent = ""
     }
   }
 }
