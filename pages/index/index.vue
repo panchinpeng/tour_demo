@@ -39,8 +39,10 @@ export default {
   },
 
   mounted() {
-    this.$store.dispatch("syncAttractions")
-    // console.log(this.$store.getters.loadedAttraction)
+    if (this.$store.state.attractions.length === 0) {
+      this.$store.dispatch("syncAttractions")
+      console.log("index mount")
+    }
   }
 }
 </script>

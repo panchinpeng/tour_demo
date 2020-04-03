@@ -4,7 +4,9 @@
       <font-awesome-icon icon="bars" class="menu-icon" @click="toggleMenu" />
       <div v-if="drop" class="menu-items">
         <ul v-if="$store.state.authentication" class="user-function">
-          <li>推薦景點</li>
+          <li v-if="$route.path !== '/'" class="link-style" @click="goIndex">
+            回首頁
+          </li>
           <li @click="gotoRecommend">
             收藏景點
             <b-badge variant="light" class="favorite-count">
@@ -16,6 +18,9 @@
           </li>
         </ul>
         <ul v-else class="user-function">
+          <li v-if="$route.path !== '/'" class="link-style" @click="goIndex">
+            回首頁
+          </li>
           <nuxt-link to="/login" class="link-style" tag="li">
             登入
           </nuxt-link>
@@ -54,6 +59,7 @@ export default {
         )
         this.favoriteCount = favoriteCount
         this.$store.dispatch("setShouldUpdateFavorite", false)
+        console.log("aaaa")
       }
     }
   },
@@ -62,6 +68,7 @@ export default {
       this.drop = false
       this.$store.dispatch("setLoginStatus", false)
       alert("已成功登出")
+      this.$router.replace("/")
     },
     toggleMenu() {
       this.drop = !this.drop
@@ -71,6 +78,10 @@ export default {
     },
     gotoRecommend() {
       ;(this.drop = false), this.$router.push("/recommend")
+    },
+    goIndex() {
+      this.drop = false
+      this.$router.push("/")
     }
   }
 }
@@ -102,9 +113,12 @@ export default {
   left: 65px;
   font-size: 1.6rem;
   color: #fff;
+  transition: opacity 1s;
+  opacity: 1;
 }
 .circle-menu.drop > .menu-icon {
-  display: none;
+  transition: opacity 1s;
+  opacity: 0;
 }
 .menu-items {
   position: absolute;

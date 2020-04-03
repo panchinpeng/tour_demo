@@ -11,7 +11,7 @@
               class="my-3"
               prepend="城市: "
             >
-              <b-form-input v-model="keywordSearch" />
+              <b-form-input v-model="keywordSearch" @keyup.enter="search" />
               <b-input-group-append>
                 <b-button
                   size="sm"
