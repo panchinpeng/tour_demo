@@ -2,12 +2,16 @@ import { fdb } from "~/plugins/firebase.js"
 import firebase from "firebase/app"
 import "firebase/auth"
 const checkLogin = () => {
-  const isLogin = firebase.auth().currentUser
-  return !!isLogin
+  return new Promise(resolve => {
+    firebase.auth().onAuthStateChanged(user => {
+      resolve(user ? user.uid : false)
+    })
+  })
 }
 
-export const dbUserLogined = () => {
-  return checkLogin()
+export const dbUserLogined = async () => {
+  let loginStatus = await checkLogin()
+  return loginStatus
 }
 
 export const fbSetComment = comment => {

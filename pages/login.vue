@@ -48,8 +48,8 @@ export default {
     }
   },
   methods: {
-    userLoginSuccess() {
-      this.$store.dispatch("setLoginStatus", true)
+    userLoginSuccess(uid) {
+      this.$store.dispatch("setLoginStatus", uid)
       this.$router.replace("/")
     },
     userLoginFail(msg) {

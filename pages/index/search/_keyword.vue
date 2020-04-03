@@ -73,10 +73,11 @@ export default {
     findData() {
       let keyword = this.keyword
       let data = this.$store.state.attractions.filter(item => {
+        // console.log(item.Keyword)
         return (
-          item.Add.indexOf(keyword) > -1 ||
-          item.Keyword.indexOf(keyword) > -1 ||
-          item.Name.indexOf(keyword) > -1
+          (item.Add && item.Add.indexOf(keyword) > -1) ||
+          (item.Keyword && item.Keyword.indexOf(keyword) > -1) ||
+          (item.Name && item.Name.indexOf(keyword) > -1)
         )
       })
       return data
@@ -86,13 +87,13 @@ export default {
       const alreadyData = this.findData
       const popupAry = []
       alreadyData.forEach(item => {
-        if (item.Keyword.indexOf(keyword) > -1) {
+        if (item.Keyword && item.Keyword.indexOf(keyword) > -1) {
           popupAry.push(item.Keyword)
         }
-        if (item.Name.indexOf(keyword) > -1) {
+        if (item.Name && item.Name.indexOf(keyword) > -1) {
           popupAry.push(item.Name)
         }
-        if (item.Add.indexOf(keyword) > -1) {
+        if (item.Add && item.Add.indexOf(keyword) > -1) {
           popupAry.push(item.Add)
         }
       })
@@ -118,7 +119,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .search-title {
   line-height: 2;
   border-bottom: 1px solid #ccc;

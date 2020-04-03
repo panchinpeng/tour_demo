@@ -5,7 +5,12 @@
       <div v-if="drop" class="menu-items">
         <ul v-if="$store.state.authentication" class="user-function">
           <li>推薦景點</li>
-          <li>收藏景點</li>
+          <li @click="gotoRecommend">
+            收藏景點
+            <b-badge variant="light" class="favorite-count">
+              {{ favoriteCount }}
+            </b-badge>
+          </li>
           <li @click="singout">
             登出
           </li>
@@ -28,18 +33,28 @@
 </template>
 
 <script>
-import { dbUserLogined } from "~/components/firebase/commentData"
 import { userLogout } from "~/components/firebase/userFunction"
+import { readFavoriteCount } from "~/components/firebase/favoriteData"
 export default {
   data() {
     return {
-      drop: false
+      drop: false,
+      favoriteCount: 0
     }
   },
-  beforeUpdate() {
-    if (!this.$store.state.authentication && dbUserLogined()) {
-      console.log("eeee1")
-      this.$store.dispatch("setLoginStatus", true)
+  watch: {
+    async drop(val) {
+      if (
+        val &&
+        this.$store.state.authentication &&
+        this.$store.state.updateFavorite
+      ) {
+        let favoriteCount = await readFavoriteCount(
+          this.$store.state.authentication
+        )
+        this.favoriteCount = favoriteCount
+        this.$store.dispatch("setShouldUpdateFavorite", false)
+      }
     }
   },
   methods: {
@@ -53,6 +68,9 @@ export default {
     },
     singout() {
       userLogout(this.userLogoutCallback)
+    },
+    gotoRecommend() {
+      ;(this.drop = false), this.$router.push("/recommend")
     }
   }
 }
@@ -102,7 +120,7 @@ export default {
   border-left: 5px solid #fff;
   padding: 10px 0;
   margin-top: 30px;
-  transition: all 2s;
+  /* transition: all 3s; */
 }
 .user-function::after {
   content: "";
@@ -116,8 +134,8 @@ export default {
   box-sizing: border-box;
   padding: 20px 20px;
   color: #fff;
-  animation-name: user-fn-animation;
-  animation-duration: 2s;
+  /* animation-name: user-fn-animation;
+  animation-duration: 2s; */
   cursor: pointer;
 }
 @keyframes user-fn-animation {
@@ -152,5 +170,8 @@ export default {
   height: 100%;
   text-decoration: none;
   cursor: pointer;
+}
+.favorite-count {
+  margin-left: 10px;
 }
 </style>

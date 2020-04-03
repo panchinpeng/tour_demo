@@ -2,7 +2,7 @@
   <div class="service-wrap">
     <video
       ref="video"
-      src="tour.mp4"
+      src="tour2.mp4"
       class="video-background"
       loop
       preload="none"
