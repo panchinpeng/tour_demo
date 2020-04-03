@@ -51,11 +51,7 @@
   </b-modal>
 </template>
 <script>
-import {
-  fbSetComment,
-  fbGetReply,
-  dbUserLogined
-} from "~/components/firebase/commentData.js"
+import { fbSetComment, fbGetReply } from "~/components/firebase/commentData.js"
 export default {
   props: {
     boxName: {
@@ -91,8 +87,7 @@ export default {
   },
   updated() {
     if (this.id > 0) {
-      console.log("popup", !this.$store.state.authentication, !dbUserLogined())
-      if (!this.$store.state.authentication && !dbUserLogined()) {
+      if (!this.$store.state.authentication) {
         this.$router.replace("/login")
         return
       }

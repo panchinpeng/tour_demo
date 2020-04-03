@@ -37,9 +37,10 @@ export default {
     Service,
     Footer
   },
+
   mounted() {
     this.$store.dispatch("syncAttractions")
-    console.log(this.$store.getters.loadedAttraction)
+    // console.log(this.$store.getters.loadedAttraction)
   }
 }
 </script>

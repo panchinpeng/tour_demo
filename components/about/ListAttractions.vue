@@ -16,20 +16,29 @@
             activeItemIndex === index && 'active-item'
           ]"
           :data-title="loopData.Name"
-          @click="prepareLinkOther(index)"
         >
           <template v-slot:aside>
             <img src="https://picsum.photos/150" width="100%" />
           </template>
 
           <h3 class="media-header">
-            {{ loopData.Name }}
+            <span class="title-wrap">
+              {{ loopData.Name }}
+            </span>
+
             <b-badge variant="success" class="badge-sm">
               {{ loopData.Region }}
             </b-badge>
             <b-badge variant="info" class="badge-sm">
               {{ loopData.Town }}
             </b-badge>
+
+            <Heart
+              v-if="$store.state.authentication"
+              :caption="loopData.Name"
+              :tour-id="loopData.Id"
+              :is-heart="favoriteData[loopData.Id] ? true : false"
+            />
           </h3>
           <p>{{ loopData.Toldescribe }}</p>
           <a
@@ -51,7 +60,12 @@
 </template>
 
 <script>
+import Heart from "~/components/about/Heart"
+import { readFavorite } from "~/components/firebase/favoriteData"
 export default {
+  components: {
+    Heart
+  },
   props: {
     action: {
       type: String,
@@ -72,7 +86,8 @@ export default {
       tempSortResult: [],
       showScrollTopBtn: false,
       actionData: this.$props.action,
-      activeItemIndex: null
+      activeItemIndex: null,
+      favoriteData: []
     }
   },
   watch: {
@@ -86,9 +101,13 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     this.fetchData(this.actionData)
     window.addEventListener("scroll", this.addScrollEvent)
+    if (this.$store.state.authentication) {
+      // 有登入同步收藏
+      this.favoriteData = await readFavorite(this.$store.state.authentication)
+    }
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.addScrollEvent)
@@ -193,6 +212,11 @@ export default {
   padding-bottom: 5px;
   border-bottom: 1px solid mediumvioletred;
 }
+.media-header::after {
+  content: "";
+  display: table;
+  clear: both;
+}
 .hover-link {
   position: absolute;
   left: 50%;
@@ -217,6 +241,7 @@ export default {
   position: relative;
   border-radius: 10px;
 }
+
 @media (max-width: 768px) {
   .media > div {
     width: 100%;
@@ -234,4 +259,8 @@ export default {
   display: block;
   position: absolute;
 }
+
+/* .title-wrap {
+  width: 200px;
+} */
 </style>

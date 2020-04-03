@@ -5,8 +5,8 @@ export const userLogin = (username, password, sucFun, failFun) => {
   firebase
     .auth()
     .signInWithEmailAndPassword(username, password)
-    .then(() => {
-      sucFun()
+    .then(user => {
+      sucFun(user.user.uid)
     })
     .catch(error => {
       // Handle Errors here.

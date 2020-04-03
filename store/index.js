@@ -1,6 +1,7 @@
 import * as ActionTypes from "~/store/action-type"
 
 export const state = () => ({
+  updateFavorite: true,
   attractions: [],
   authentication: false,
   counter: 0
@@ -9,27 +10,31 @@ export const state = () => ({
 export const mutations = {
   [ActionTypes.SYNCATTRACTIONS](state, datas) {
     // state.attractions = datas.XML_Head.Infos.Info
-    const tmp = datas.XML_Head.Infos.Info
-    let tmp2 = []
-    tmp.forEach((item, index) => {
-      tmp2[index] = item.Changetime
-    })
+    const tmp = datas
+    // let tmp2 = []
+    // tmp.forEach((item, index) => {
+    //   tmp2[index] = item.Changetime
+    // })
 
-    let tmp3 = tmp2.slice(0).sort((a, b) => Date.parse(b) - Date.parse(a))
+    // let tmp3 = tmp2.slice(0).sort((a, b) => Date.parse(b) - Date.parse(a))
 
-    let tmp4 = []
-    tmp3.forEach(item => {
-      const tmpIndex = tmp2.indexOf(item)
-      tmp4.push(tmp[tmpIndex])
-      tmp2[tmpIndex] = null
-    })
-    state.attractions = tmp4
+    // let tmp4 = []
+    // tmp3.forEach(item => {
+    //   const tmpIndex = tmp2.indexOf(item)
+    //   tmp4.push(tmp[tmpIndex])
+    //   tmp2[tmpIndex] = null
+    // })
+    // state.attractions = tmp4
+    state.attractions = tmp
   },
   [ActionTypes.SETLOGINSTATUS](state, data) {
     state.authentication = data
   },
   [ActionTypes.SETUSERCOUNTER](state, data) {
     state.counter = data
+  },
+  [ActionTypes.SETFAVORITE](state, data) {
+    state.updateFavorite = data
   }
 }
 
@@ -38,14 +43,32 @@ export const actions = {
     let datas = await this.$axios.$get("/scenic_spot_C_f.json")
     // let datas = await this.$axios.$get("/scenic_spot_C_f.json")
 
-    commit(ActionTypes.SYNCATTRACTIONS, datas)
+    let filterAry = datas.XML_Head.Infos.Info.map(item => {
+      return {
+        Add: item.Add,
+        Changetime: item.Changetime,
+        Id: item.Id,
+        Keyword: item.Keyword,
+        Name: item.Name,
+        Opentime: item.Opentime,
+        Region: item.Region,
+        Tel: item.Tel,
+        Toldescribe: item.Toldescribe,
+        Town: item.Town,
+        Travellinginfo: item.Travellinginfo,
+        Zipcode: item.Zipcode
+      }
+    })
+    commit(ActionTypes.SYNCATTRACTIONS, filterAry)
   },
   setLoginStatus({ commit }, status) {
-    status = !!status
     commit(ActionTypes.SETLOGINSTATUS, status)
   },
   setUserCounter({ commit }, data) {
     data * 1 > 0 && commit(ActionTypes.SETUSERCOUNTER, data)
+  },
+  setShouldUpdateFavorite({ commit }, data) {
+    commit(ActionTypes.SETFAVORITE, data)
   }
 }
 export const getters = {
