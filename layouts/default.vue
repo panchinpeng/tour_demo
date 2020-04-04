@@ -46,4 +46,13 @@
   left: 0;
   background-color: #2b5b04;
 }
+.page-enter-active,
+.page-leave-active {
+  transition: all 1s;
+  opacity: 1;
+}
+.page-enter,
+.page-leave {
+  opacity: 0;
+}
 </style>
