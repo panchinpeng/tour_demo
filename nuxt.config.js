@@ -16,7 +16,21 @@ const routerBase =
           }
         }
       }
-    : {}
+    : {
+        router: {
+          base: "/"
+        },
+        axios: {
+          proxy: true, // Can be also an object with default options
+          prefix: "/"
+        },
+        proxy: {
+          "/scenic_spot_C_f.json": {
+            target: "http://192.168.0.29/",
+            changeOrigin: true
+          }
+        }
+      }
 
 export default {
   ...routerBase,
