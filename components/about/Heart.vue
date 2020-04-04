@@ -1,7 +1,7 @@
 <template>
   <div class="heart-wrap">
     <img
-      src="/heart.png"
+      :src="env ? '/tour_demo/heart.png' : '/heart.png'"
       :class="['heart-icon', !heartStatus ? 'heartBg' : 'unheartBg']"
       @click="favorite(true)"
     />
@@ -32,7 +32,8 @@ export default {
   },
   data() {
     return {
-      heartTog: null
+      heartTog: null,
+      env: process.env.release
     }
   },
   computed: {

@@ -11,10 +11,10 @@
         draggable="true"
         :data-dist="item"
         @dragstart="dragstart(item)"
-        @drop.prevent="droped"
-        @dragenter.prevent=""
-        @dragover.prevent=""
-        @dragend="dragend"
+        @drop.prevent.stop="droped"
+        @dragenter.prevent.stop=""
+        @dragover.prevent.stop=""
+        @dragend.stop="dragend"
       >
         {{ favoriteContent[item].caption }}
       </li>
