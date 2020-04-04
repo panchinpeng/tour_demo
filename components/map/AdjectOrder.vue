@@ -14,7 +14,9 @@
         @drop.prevent.stop="droped"
         @dragenter.prevent.stop=""
         @dragover.prevent.stop=""
-        @dragend.stop="dragend"
+        @dragend="dragend"
+        @touchstart.prevent="touchstart"
+        @touchend.prevent="touchend"
       >
         {{ favoriteContent[item].caption }}
       </li>
@@ -64,6 +66,48 @@ export default {
     }
   },
   methods: {
+    touchstart() {
+      event.target.classList.add("dragging")
+    },
+    touchend() {
+      let dropY = event.changedTouches[0].pageY
+
+      const refElements = [...document.querySelectorAll(".model-list>li")]
+
+      // 計算結束停在哪個元素上
+      let findDist = refElements.findIndex(item => {
+        let itemInfo = item.getBoundingClientRect()
+        return dropY > itemInfo.top && dropY < itemInfo.top + itemInfo.height
+      })
+      if (findDist === -1) {
+        // 找不到的話 確認拖曳結束時是否停在最後一個的Y軸下，是的話放在最下面
+        let lastItem = refElements[
+          refElements.length - 1
+        ].getBoundingClientRect()
+        if (dropY > lastItem.top + lastItem.height) {
+          findDist = refElements.length - 1
+        }
+      }
+      if (findDist === -1) {
+        //找不到的話 確認拖曳結束時是否停在第一個的Y軸上，是的話放在最上面
+        let firstItem = refElements[0].getBoundingClientRect()
+        if (dropY < firstItem.top) {
+          findDist = 0
+        }
+      }
+      let sourceElement = event.target
+      let oldIndex = this.datasList.findIndex(
+        item => item === sourceElement.dataset.dist
+      )
+
+      if (oldIndex !== findDist) {
+        // 當拖曳停下位置不是自己 在更換
+        this.datasList.splice(oldIndex, 1)
+        this.datasList.splice(findDist, 0, sourceElement.dataset.dist)
+      }
+      console.log(findDist)
+      event.target.classList.remove("dragging")
+    },
     dragstart(dataId) {
       // console.log(event, dataId)
       event.dataTransfer.setData("unique", dataId)

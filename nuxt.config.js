@@ -28,7 +28,10 @@ export default {
     title: "景點分享平台",
     meta: [
       { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1, user-scalable=no"
+      },
       {
         hid: "description",
         name: "description",
@@ -99,5 +102,8 @@ export default {
     onlineApi:
       process.env.DEPLOY_ENV === "GH_PAGES" ? "user-release" : "user-test",
     release: process.env.DEPLOY_ENV === "GH_PAGES"
+  },
+  server: {
+    host: "192.168.0.29"
   }
 }
