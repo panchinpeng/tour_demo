@@ -188,6 +188,12 @@ export default {
 </script>
 
 <style>
+.badge {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+}
 .loading-effect {
   display: flex;
   justify-content: center;

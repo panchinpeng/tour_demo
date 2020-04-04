@@ -21,18 +21,18 @@
         <b-col class="d-none d-sm-block d-md-none">
           <carousel :per-page="4" pagination-active-color="#aaa">
             <Slide v-for="item in areas" :key="item">
-              <div class="city-wrap">
+              <nuxt-link :to="'/search/' + item" class="city-wrap">
                 {{ item }}
-              </div>
+              </nuxt-link>
             </Slide>
           </carousel>
         </b-col>
         <b-col class="d-sm-none">
           <carousel :per-page="3" pagination-active-color="#aaa">
             <Slide v-for="item in areas" :key="item">
-              <div class="city-wrap">
+              <nuxt-link :to="'/search/' + item" class="city-wrap">
                 {{ item }}
-              </div>
+              </nuxt-link>
             </Slide>
           </carousel>
         </b-col>
