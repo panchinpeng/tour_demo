@@ -1,6 +1,7 @@
 import { fdb } from "~/plugins/firebase.js"
 import firebase from "firebase/app"
 import "firebase/auth"
+import moment from "moment"
 const checkLogin = () => {
   return new Promise(resolve => {
     firebase.auth().onAuthStateChanged(user => {
@@ -27,7 +28,6 @@ export const fbGetReply = id => {
     .orderByChild("id")
     .equalTo(id)
     .on("child_added", snapshot => {
-      console.log(snapshot)
       returnData.push({ key: snapshot.key, ...snapshot.val() })
     })
 
@@ -35,20 +35,56 @@ export const fbGetReply = id => {
 }
 
 export const fbGetRealCommentData = () => {
-  let returnData = []
+  // let returnData = []
   return new Promise(resolve => {
-    const ref = fdb.ref("comment")
-    ref.on("value", snapshot => {
-      let commentDatas = snapshot.val()
-
-      for (const key in commentDatas) {
-        // eslint-disable-next-line no-prototype-builtins
-        if (commentDatas.hasOwnProperty(key)) {
-          returnData.push(commentDatas[key])
-        }
+    const ref = fdb
+      .ref("commentRank")
+      .orderByValue()
+      .limitToLast(1)
+    ref.once("value", async snapshot => {
+      let publicId = Object.keys(snapshot.val())[0]
+      const resultComment = await getTourComment(publicId)
+      // console.log("~~~~", resultComment)
+      let returnData = []
+      for (let key in resultComment) {
+        let data = resultComment[key]
+        returnData.push({ id: key, ...data })
       }
       resolve(returnData)
     })
+  })
+}
+// 取某一個景點的留言
+const getTourComment = tid => {
+  const ref = fdb.ref(`comment/${tid}`).limitToFirst(12)
+  return new Promise(resolve => {
+    ref.on("value", snapshot => {
+      resolve(snapshot.val())
+    })
+  })
+}
+export const fbSetRealCommentData = (msg, tourId, u) => {
+  if (checkLogin()) {
+    const ref = fdb.ref("comment")
+    ref
+      .child(tourId)
+      .push({ u, msg, d: moment().format("YYYY-MM-DD HH:mm:ss") })
+
+    pushHotComment(tourId)
+  }
+}
+// 留言次數
+const pushHotComment = tourId => {
+  const ref = fdb.ref(`commentRank/${tourId}`)
+  // 交易機制
+  ref.transaction(rank => {
+    if (rank) {
+      // 如果有設定過
+      return rank + 1
+    } else {
+      // 如果從未設定過
+      return 1
+    }
   })
 }
 

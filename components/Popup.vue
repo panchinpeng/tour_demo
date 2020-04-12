@@ -52,6 +52,7 @@
 </template>
 <script>
 import { fbSetComment, fbGetReply } from "~/components/firebase/commentData.js"
+import monent from "moment"
 export default {
   props: {
     boxName: {
@@ -70,9 +71,9 @@ export default {
       type: String
     },
     id: {
-      default: 0,
+      default: "",
       required: true,
-      type: Number
+      type: String
     },
     resetPopupData: {
       required: true,
@@ -86,11 +87,12 @@ export default {
     }
   },
   updated() {
-    if (this.id > 0) {
+    if (this.id) {
       if (!this.$store.state.authentication) {
         this.$router.replace("/login")
         return
       }
+
       this.replys = fbGetReply(this.id)
     }
   },
@@ -104,19 +106,10 @@ export default {
       }
       return num
     },
-    getNowDate() {
-      const d = new Date()
-      return (
-        d.getFullYear() +
-        "-" +
-        this.fillZero(d.getMonth() + 1) +
-        "-" +
-        this.fillZero(d.getDate() + 1)
-      )
-    },
+
     sendMsg() {
       fbSetComment({
-        d: this.getNowDate(),
+        d: monent().format("YYYY-MM-DD HH:mm:ss"),
         msg: this.message,
         id: this.id
       })

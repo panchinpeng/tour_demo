@@ -19,16 +19,15 @@ export default {
     KeywordSearch,
     userMenu
   },
-  async created() {
-    if (!this.$store.state.authentication) {
-      let user = await dbUserLogined()
-      if (user) {
-        this.$store.dispatch("setLoginStatus", user)
-      }
+  async fetch({ store }) {
+    let user = await dbUserLogined()
+    if (user) {
+      store.dispatch("setLoginStatus", user)
     }
     let nowCounter = await fbSetReadCountAddOne()
-    this.$store.dispatch("setUserCounter", nowCounter)
-  }
+    store.dispatch("setUserCounter", nowCounter)
+  },
+  scrollToTop: true
 }
 </script>
 

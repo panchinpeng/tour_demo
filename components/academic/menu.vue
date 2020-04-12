@@ -68,7 +68,10 @@ export default {
       this.drop = false
       this.$store.dispatch("setLoginStatus", false)
       alert("已成功登出")
-      this.$router.replace("/")
+      // prevent Navigating to current location ("/") is not allowed"
+      if (this.$route.path !== "/") {
+        this.$router.replace("/")
+      }
     },
     toggleMenu() {
       this.drop = !this.drop
@@ -81,7 +84,9 @@ export default {
     },
     goIndex() {
       this.drop = false
-      this.$router.push("/")
+      setTimeout(() => {
+        this.$router.push("/")
+      }, 1000)
     }
   }
 }

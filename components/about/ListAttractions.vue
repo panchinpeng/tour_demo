@@ -9,13 +9,9 @@
           v-for="(loopData, index) in loadFinishData"
           :key="index"
           tag="li"
-          :class="[
-            'my-4',
-            'flex-column',
-            'flex-md-row',
-            activeItemIndex === index && 'active-item'
-          ]"
+          :class="['my-4', 'flex-column', 'flex-md-row']"
           :data-title="loopData.Name"
+          @click="showCommitReply(loopData.Id)"
         >
           <template v-slot:aside>
             <img src="https://picsum.photos/150" width="100%" />
@@ -41,13 +37,11 @@
             />
           </h3>
           <p>{{ loopData.Toldescribe }}</p>
-          <a
-            v-if="activeItemIndex === index"
-            class="hover-link"
-            :href="'https://www.google.com/search?q=' + loopData.Name"
+          <div
+            v-if="activeListItem === loopData.Id && $store.state.authentication"
           >
-            <font-awesome-icon icon="neuter" />
-          </a>
+            <ShowTourCommit :tid="activeListItem" />
+          </div>
           <!-- b-[Optional: add media children here for nesting] -->
         </b-media>
       </ul>
@@ -62,9 +56,11 @@
 <script>
 import Heart from "~/components/about/Heart"
 import { readFavorite } from "~/components/firebase/favoriteData"
+import ShowTourCommit from "~/components/about/showTourCommit"
 export default {
   components: {
-    Heart
+    Heart,
+    ShowTourCommit
   },
   props: {
     action: {
@@ -86,14 +82,13 @@ export default {
       tempSortResult: [],
       showScrollTopBtn: false,
       actionData: this.$props.action,
-      activeItemIndex: null,
-      favoriteData: []
+      favoriteData: [],
+      activeListItem: null
     }
   },
   watch: {
     page: {
       handler(newValue) {
-        console.log("v")
         if (newValue > 2) {
           this.showScrollTopBtn = true
         }
@@ -114,8 +109,11 @@ export default {
   },
 
   methods: {
-    prepareLinkOther(index) {
-      this.activeItemIndex = index
+    showCommitReply(idx) {
+      console.log(idx)
+      this.activeListItem === idx
+        ? (this.activeListItem = null)
+        : (this.activeListItem = idx)
     },
     addScrollEvent() {
       let bottomWrap = this.$refs["bottomWrap"]

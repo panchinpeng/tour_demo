@@ -50,6 +50,7 @@ export default {
   methods: {
     userLoginSuccess(uid) {
       this.$store.dispatch("setLoginStatus", uid)
+      this.$store.dispatch("setShouldUpdateFavorite", true)
       this.$router.replace("/")
     },
     userLoginFail(msg) {

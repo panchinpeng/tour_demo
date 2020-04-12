@@ -4,7 +4,7 @@
       <b-row>
         <b-col>
           <h5 class="title">
-            熱門留言
+            熱門景點留言
           </h5>
         </b-col>
       </b-row>
@@ -14,18 +14,18 @@
             <OverlayScrollbarsComponent>
               <div class="comment-wrap">
                 <div
-                  v-if="comments"
+                  v-if="comments.length > 0"
                   ref="lineTimes"
                   class="line-times"
                   :style="{ width: timeLineLength + 'px' }"
                 >
                   <div
-                    v-for="item in comments"
+                    v-for="(item, index) in comments"
                     :key="item.id"
-                    :style="positionCommentPos(item.id)"
+                    :style="positionCommentPos(index + 1)"
                     :class="[
                       'comment-box',
-                      item.id % 2 === 0 ? 'top-comment' : 'bottom-comment'
+                      index % 2 === 1 ? 'top-comment' : 'bottom-comment'
                     ]"
                     @click="showMsgBox(item.id)"
                   >
@@ -70,7 +70,7 @@ export default {
       selectTime: "",
       selectContent: "",
       slideLeft: false,
-      id: 0
+      id: "0"
     }
   },
   computed: {
@@ -93,7 +93,8 @@ export default {
   },
   methods: {
     showMsgBox(id) {
-      const findComment = this.comments.find(item => item.id === id * 1)
+      const findComment = this.comments.find(item => item.id === id)
+      console.log("findComment", findComment, id)
       this.selectTime = findComment.d
       this.selectContent = findComment.msg
       this.id = id
@@ -122,13 +123,14 @@ export default {
         domOffset.top - viewH < (domOffset.height / 3) * -1 &&
         !this.slideLeft
       ) {
-        this.comments = await fbGetRealCommentData()
+        this.comments.length === 0 &&
+          (this.comments = await fbGetRealCommentData())
         window.removeEventListener("scroll", this.slideMessage)
       }
     },
     resetPopupData() {
       // 避免登入登出後同時點選同一門留言，導致popup沒偵測到updated，而發生錯誤
-      this.id = 0
+      this.id = "0"
       this.selectTime = ""
       this.selectContent = ""
     }
