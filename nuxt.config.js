@@ -39,7 +39,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: "景點分享平台",
+    title: "景點分享平台練習用",
     meta: [
       { charset: "utf-8" },
       {

@@ -10,7 +10,13 @@
       </b-row>
       <b-row>
         <b-col>
-          <div>
+          <div v-if="popularTour">
+            <div>{{ popularTour.Name }}</div>
+            <ul v-if="popularTour">
+              <li>地點: {{ popularTour.Region }}</li>
+              <li>位置: {{ popularTour.Add }}</li>
+              <li>營業時間:{{ popularTour.Opentime }}</li>
+            </ul>
             <OverlayScrollbarsComponent>
               <div class="comment-wrap">
                 <div
@@ -29,9 +35,12 @@
                     ]"
                     @click="showMsgBox(item.id)"
                   >
-                    <div style="height: 100%; width: 100%; overflow: hidden; ">
-                      {{ item.msg.substr(0, 40) }}
-                      <span v-if="item.msg.length > 40">...</span>
+                    <div class="comment-wrap-para">
+                      {{ item.msg.substr(0, 45) }}
+                      <span v-if="item.msg.length > 45">...</span>
+                      <div class="time-wrap">
+                        {{ item.d }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -70,7 +79,8 @@ export default {
       selectTime: "",
       selectContent: "",
       slideLeft: false,
-      id: "0"
+      id: "0",
+      popularTour: null
     }
   },
   computed: {
@@ -121,10 +131,16 @@ export default {
       )
       if (
         domOffset.top - viewH < (domOffset.height / 3) * -1 &&
-        !this.slideLeft
+        !this.slideLeft &&
+        this.comments.length === 0
       ) {
-        this.comments.length === 0 &&
-          (this.comments = await fbGetRealCommentData())
+        let fethData = await fbGetRealCommentData()
+        this.comments = fethData[1]
+        // 搜尋景點名稱
+        let popularTourInfo = this.$store.state.attractions.find(item => {
+          return item.Id === fethData[0]
+        })
+        this.popularTour = popularTourInfo
         window.removeEventListener("scroll", this.slideMessage)
       }
     },
@@ -140,9 +156,8 @@ export default {
 
 <style>
 .line-times {
-  height: 5px;
-  border-radius: 10px;
-  background-color: #aaa;
+  height: 3px;
+  background-color: #000;
   position: relative;
   flex-shrink: 0;
 }
@@ -187,14 +202,30 @@ export default {
 }
 .comment-wrap {
   margin: 30px 0;
-  height: 400px;
+  height: 280px;
   display: flex;
   align-items: center;
   /* overflow: auto; */
+  font-size: 14px;
 }
 
 .msg-wrap {
   width: 100%;
   height: 100%;
+}
+
+.time-wrap {
+  position: absolute;
+  bottom: 0;
+  font-size: 12px;
+  background-color: aquamarine;
+  padding: 0 2px;
+  border-radius: 4px;
+}
+.comment-wrap-para {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
 }
 </style>

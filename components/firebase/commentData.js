@@ -50,7 +50,7 @@ export const fbGetRealCommentData = () => {
         let data = resultComment[key]
         returnData.push({ id: key, ...data })
       }
-      resolve(returnData)
+      resolve([publicId, returnData])
     })
   })
 }

@@ -88,6 +88,8 @@ export default {
           // delete component data
           this.prepareToMap.delete(item)
           delete this.favoriteContent[item]
+          // 更新收藏數字
+          this.$store.dispatch("setShouldUpdateFavorite", true)
         })
         this.$forceUpdate()
       }
