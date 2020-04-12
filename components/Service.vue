@@ -107,5 +107,7 @@ export default {
   padding-bottom: 0;
   /* 解決影片下方多一塊空白 */
   font-size: 0;
+  height: 522px;
+  overflow: hidden;
 }
 </style>
