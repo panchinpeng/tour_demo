@@ -54,9 +54,12 @@ export const fbGetRealCommentData = () => {
     })
   })
 }
-// 取某一個景點的留言
-const getTourComment = tid => {
-  const ref = fdb.ref(`comment/${tid}`).limitToFirst(12)
+// 取某一個景點的留言(按時間降序排列)
+export const getTourComment = (tid, limit = 12) => {
+  const ref = fdb
+    .ref(`comment/${tid}`)
+    .orderByChild("d")
+    .limitToLast(limit)
   return new Promise(resolve => {
     ref.on("value", snapshot => {
       resolve(snapshot.val())

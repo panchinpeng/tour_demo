@@ -11,7 +11,7 @@
           tag="li"
           :class="['my-4', 'flex-column', 'flex-md-row']"
           :data-title="loopData.Name"
-          @click="showCommitReply(loopData.Id)"
+          @click="goToTour(loopData.Id)"
         >
           <template v-slot:aside>
             <img src="https://picsum.photos/150" width="100%" />
@@ -37,6 +37,9 @@
             />
           </h3>
           <p>{{ loopData.Toldescribe }}</p>
+          <p class="do-reply" @click.stop="showCommitReply(loopData.Id)">
+            留個言八&nbsp;..
+          </p>
           <div
             v-if="activeListItem === loopData.Id && $store.state.authentication"
           >
@@ -180,6 +183,9 @@ export default {
       }
 
       this.loading = false
+    },
+    goToTour(tid) {
+      this.$router.push(`/tour/${tid}`)
     }
   }
 }
@@ -244,6 +250,9 @@ export default {
 .active-item {
   position: relative;
   border-radius: 10px;
+}
+.do-reply {
+  color: #aaaaff;
 }
 
 @media (max-width: 768px) {

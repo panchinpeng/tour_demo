@@ -26,7 +26,7 @@ const routerBase =
         },
         proxy: {
           "/scenic_spot_C_f.json": {
-            target: "http://192.168.0.29/",
+            target: "http://192.168.198.1/",
             changeOrigin: true
           }
         }
@@ -118,6 +118,6 @@ export default {
     release: process.env.DEPLOY_ENV === "GH_PAGES"
   },
   server: {
-    host: "192.168.0.29"
+    host: "192.168.198.1"
   }
 }

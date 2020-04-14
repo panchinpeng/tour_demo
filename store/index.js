@@ -56,7 +56,8 @@ export const actions = {
         Toldescribe: item.Toldescribe,
         Town: item.Town,
         Travellinginfo: item.Travellinginfo,
-        Zipcode: item.Zipcode
+        Zipcode: item.Zipcode,
+        Ticketinfo: item.Ticketinfo
       }
     })
     commit(ActionTypes.SYNCATTRACTIONS, filterAry)
