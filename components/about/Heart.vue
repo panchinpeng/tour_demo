@@ -3,12 +3,12 @@
     <img
       :src="env ? '/tour_demo/heart.png' : '/heart.png'"
       :class="['heart-icon', !heartStatus ? 'heartBg' : 'unheartBg']"
-      @click="favorite(true)"
+      @click.stop="favorite(true)"
     />
     <font-awesome-icon
       icon="heart"
       :class="['heart-icon', heartStatus ? 'heartBg' : 'unheartBg']"
-      @click="favorite(false)"
+      @click.stop="favorite(false)"
     />
   </div>
 </template>
