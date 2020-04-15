@@ -17,7 +17,7 @@
           </div>
 
           <nuxt-link
-            v-for="(popup, index) in showShortData"
+            v-for="(popup, index) in keywordPopups.slice(0, 20)"
             :key="index"
             :to="'/search/' + popup"
           >
@@ -25,6 +25,17 @@
               {{ popup }}
             </b-badge>
           </nuxt-link>
+          <SlideUpDown :active="toggleShowOrHide === 'hide'" :duration="2000">
+            <nuxt-link
+              v-for="(popup, index) in keywordPopups.slice(20)"
+              :key="index"
+              :to="'/search/' + popup"
+            >
+              <b-badge variant="primary" class="mx-1 badge">
+                {{ popup }}
+              </b-badge>
+            </nuxt-link>
+          </SlideUpDown>
           <div
             v-if="toggleShowOrHide && toggleShowOrHide !== 'hide'"
             class="more-btn"
@@ -32,6 +43,14 @@
           >
             加載更多&nbsp;&nbsp;&nbsp;
             <font-awesome-icon icon="angle-down" />
+          </div>
+          <div
+            v-if="toggleShowOrHide === 'hide'"
+            class="more-btn"
+            @click="showOrHidePopup"
+          >
+            收疊結果
+            <font-awesome-icon icon="angle-up" />
           </div>
         </b-col>
       </b-row>
@@ -51,17 +70,15 @@
 
 <script>
 import ListAttractions from "~/components/about/ListAttractions.vue"
+import SlideUpDown from "vue-slide-up-down"
 export default {
+  name: "SearchResult",
   middleware: "storeDataVerify",
   components: {
-    ListAttractions
+    ListAttractions,
+    SlideUpDown
   },
   asyncData() {
-    return {
-      toggleShowOrHide: false
-    }
-  },
-  data() {
     return {
       toggleShowOrHide: false
     }
@@ -97,15 +114,11 @@ export default {
           popupAry.push(item.Add)
         }
       })
+      if (popupAry.length > 20) {
+        this.showOrHidePopup()
+      }
 
       return popupAry
-    },
-    showShortData() {
-      if (this.keywordPopups.length > 20 && this.toggleShowOrHide !== "hide") {
-        this.showOrHidePopup()
-        return this.keywordPopups.slice(0, 20)
-      }
-      return this.keywordPopups
     }
   },
   methods: {
@@ -136,5 +149,17 @@ export default {
 }
 .badge {
   color: #fff !important;
+}
+
+.hide {
+  height: 200px;
+  overflow: hidden;
+  transition: all 6s;
+}
+
+.show {
+  height: auto;
+  overflow: visible;
+  transition: all 6s;
 }
 </style>
