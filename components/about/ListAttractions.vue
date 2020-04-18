@@ -113,10 +113,15 @@ export default {
 
   methods: {
     showCommitReply(idx) {
-      console.log(idx)
       this.activeListItem === idx
         ? (this.activeListItem = null)
         : (this.activeListItem = idx)
+      if (this.activeListItem === idx) {
+        this.activeListItem = null
+        alert("本功能限於登入者使用")
+      } else {
+        this.activeListItem = idx
+      }
     },
     addScrollEvent() {
       let bottomWrap = this.$refs["bottomWrap"]
