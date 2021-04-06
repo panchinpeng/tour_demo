@@ -4,7 +4,9 @@ export const state = () => ({
   updateFavorite: true,
   attractions: [],
   authentication: false,
-  counter: 0
+  counter: 0,
+  username: "",
+  showSkeleton: false
 })
 
 export const mutations = {
@@ -35,6 +37,12 @@ export const mutations = {
   },
   [ActionTypes.SETFAVORITE](state, data) {
     state.updateFavorite = data
+  },
+  [ActionTypes.SETUSERNAME](state, data) {
+    state.username = data
+  },
+  [ActionTypes.SHOWSKEKETON](state, data) {
+    state.showSkeleton = data
   }
 }
 
@@ -70,6 +78,12 @@ export const actions = {
   },
   setShouldUpdateFavorite({ commit }, data) {
     commit(ActionTypes.SETFAVORITE, data)
+  },
+  setUsername({ commit }, data) {
+    commit(ActionTypes.SETUSERNAME, data)
+  },
+  setShowSkeketon({ commit }, data) {
+    commit(ActionTypes.SHOWSKEKETON, !!data)
   }
 }
 export const getters = {
