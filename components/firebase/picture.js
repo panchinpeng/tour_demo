@@ -2,36 +2,60 @@ import firebase from "firebase/app"
 import "firebase/storage"
 
 import { fdb } from "~/plugins/firebase.js"
-const ref = fdb.ref("users")
 
 export function uploadAvatar(file, uid, progressHandler = () => {}) {
+  const ref = fdb.ref("users")
   return new Promise((resolve, reject) => {
     const storageRef = firebase.storage().ref()
     const metadata = {
       contentType: file.type
     }
-    const uploadTask = storageRef
-      .child(Date.now() + file.name)
-      .put(file, metadata)
+    const filename = Date.now() + file.name
+    const uploadTask = storageRef.child(filename).put(file, metadata)
     uploadTask.on(
       "state_changed",
       progressHandler,
       () => {},
       async () => {
-        let url = await uploadTask.snapshot.ref.getDownloadURL()
-        ref.child(uid).set(
-          {
-            url
-          },
-          err => {
-            if (err) {
-              reject(err)
-            } else {
-              resolve(url)
-            }
+        try {
+          let snapshot = await ref.child(uid).once("value")
+          let obj = snapshot.val()
+          if (obj) {
+            // 刪除檔案
+            await firebase
+              .storage()
+              .ref()
+              .child(obj.filename)
+              .delete()
           }
-        )
+          let url = await uploadTask.snapshot.ref.getDownloadURL()
+          ref.child(uid).set({
+            filename
+          })
+          resolve(url)
+        } catch (e) {
+          console.log("happen error", e)
+          reject(e)
+        }
       }
     )
+  })
+}
+export function getAvatarUrl(username) {
+  return new Promise(resolve => {
+    const ref = fdb.ref("users")
+    ref.child(username).once("value", async snapshot => {
+      const obj = snapshot.val()
+      if (obj) {
+        const filename = obj.filename
+        const url = await firebase
+          .storage()
+          .ref()
+          .child(filename)
+          .getDownloadURL()
+        resolve(url)
+      }
+      resolve(null)
+    })
   })
 }
