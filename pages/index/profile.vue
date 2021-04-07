@@ -1,23 +1,43 @@
 <template>
-  <div class="wrapper">
+  <div class="profileWrapper">
     <div class="avatarWrap">
-      <img
-        :src="
-          imgUrl
-            ? imgUrl
-            : 'https://image.freepik.com/free-vector/man-avatar-profile-round-icon_24640-14044.jpg'
-        "
-      />
+      <img v-if="imgUrl" :src="imgUrl" />
       <label for="picPic">
         <font-awesome-icon icon="images" class="pickPic" />
       </label>
       <input id="picPic" type="file" accept="image/*" @change="handlePic" />
     </div>
+    <div class="settingWrap">
+      <div>
+        <ul class="updateInfo">
+          <li
+            :class="{ rotate: active === 'nickname' }"
+            @click="rotateLeave('nickname')"
+          >
+            暱稱
+          </li>
+          <li
+            :class="{ rotate: active === 'live' }"
+            @click="rotateLeave('live')"
+          >
+            居住地
+          </li>
+        </ul>
+      </div>
+      <!-- <ul>
+        <li>
+          <input type="text" placeholder="暱稱" />
+        </li>
+        <li>
+          <input type="text" placeholder="居住地" />
+        </li>
+      </ul> -->
+    </div>
     <skeketon v-if="$store.state.showSkeleton" :loading-time="progress" />
   </div>
 </template>
 <script>
-import { uploadAvatar } from "~/components/firebase/picture"
+import { uploadAvatar, getAvatarUrl } from "~/components/firebase/picture"
 import skeketon from "~/components/common/skeketon"
 export default {
   components: {
@@ -25,9 +45,14 @@ export default {
   },
   data() {
     return {
-      imgUrl: "",
-      progress: 0
+      imgUrl: null,
+      progress: 0,
+      active: null
     }
+  },
+  async created() {
+    let url = await getAvatarUrl(this.$store.state.authentication)
+    this.imgUrl = url
   },
   methods: {
     async handlePic(e) {
@@ -40,18 +65,22 @@ export default {
         )
         this.imgUrl = url
         this.$store.dispatch("setShowSkeketon", false)
+        this.progress = 0
       } catch (e) {
         alert("發生錯誤...")
       }
     },
     handleUploadProgress(snapshot) {
       this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    },
+    rotateLeave(type) {
+      this.active = type
     }
   }
 }
 </script>
 <style>
-.wrapper {
+.profileWrapper {
   max-width: 900px;
   margin: auto;
   padding-top: 10px;
@@ -59,8 +88,8 @@ export default {
 .avatarWrap {
   border-radius: 50%;
   background: #eceaea;
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   margin: auto;
   margin: auto;
   position: relative;
@@ -73,7 +102,7 @@ export default {
   border-radius: 50%;
 }
 .avatarWrap .pickPic {
-  font-size: 37px;
+  font-size: 30px;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -85,6 +114,49 @@ export default {
 }
 #picPic {
   display: none;
+}
+.settingWrap {
+  padding: 15px;
+}
+.profileWrapper ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+}
+.profileWrapper input {
+  border: 0;
+  border-bottom: 1px solid gray;
+  width: 100%;
+  margin: 15px 0;
+  color: #726363;
+  outline: 0;
+}
+.updateInfo {
+  text-align: center;
+}
+.updateInfo li {
+  padding: 5px;
+  border-radius: 50%;
+  background: #3f51b526;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+}
+.updateInfo li.rotate {
+  position: relative;
+  animation: rotateAndLeave 1s linear forwards;
+}
+@keyframes rotateAndLeave {
+  0% {
+    transform: rotate(0deg);
+    left: 0;
+  }
+  100% {
+    transform: rotate(360deg);
+    left: 130%;
+  }
 }
 @keyframes border-size {
   0% {
