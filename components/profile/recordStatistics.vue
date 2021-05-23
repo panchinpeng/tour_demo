@@ -1,7 +1,8 @@
 <template>
   <div class="statistics-wrap">
     <div class="circle-wrap">
-      留言數
+      留言數:
+      {{ commitCount }}
     </div>
     <div class="circle-wrap">
       回復數
@@ -14,7 +15,16 @@
     </div>
   </div>
 </template>
-<script></script>
+<script>
+export default {
+  props: {
+    commitCount: {
+      type: Number,
+      default: 0
+    }
+  }
+}
+</script>
 <style scoped>
 .statistics-wrap {
   background: #000;

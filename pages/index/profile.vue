@@ -40,7 +40,7 @@
         </ul>
       </div>
     </div>
-    <recordStatistics />
+    <recordStatistics :commit-count="commitCount" />
     <skeketon v-if="$store.state.showSkeleton" :loading-time="progress" />
   </div>
 </template>
@@ -91,16 +91,18 @@ export default {
       ],
       city: "",
       nickname: "",
-      isUserChange: false
+      isUserChange: false,
+      commitCount: 0
     }
   },
   async created() {
     const uid = this.$store.state.authentication
     let url = await getAvatarUrl(uid)
-    let { city, nickname } = await getUserSetting(uid)
+    let { city, nickname, commitCount } = await getUserSetting(uid)
     this.imgUrl = url
     this.city = city
     this.nickname = nickname
+    this.commitCount = commitCount
   },
   methods: {
     async handlePic(e) {

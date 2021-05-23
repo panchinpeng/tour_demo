@@ -31,13 +31,15 @@ export default {
     }
   },
   methods: {
-    sendMsg() {
-      fbSetRealCommentData(
+    async sendMsg() {
+      this.$store.dispatch("setLoading", true)
+      await fbSetRealCommentData(
         this.commit,
         this.tid,
         this.$store.state.authentication
       )
       this.commit = ""
+      this.$store.dispatch("setLoading", false)
     }
   }
 }

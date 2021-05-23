@@ -133,14 +133,19 @@ export default {
         !this.slideLeft &&
         this.comments.length === 0
       ) {
-        let fethData = await fbGetRealCommentData()
-        this.comments = fethData[1]
-        // 搜尋景點名稱
-        let popularTourInfo = this.$store.state.attractions.find(item => {
-          return item.Id === fethData[0]
-        })
-        this.popularTour = popularTourInfo
-        window.removeEventListener("scroll", this.slideMessage)
+        try {
+          let fethData = await fbGetRealCommentData()
+          this.comments = fethData[1]
+          // 搜尋景點名稱
+          let popularTourInfo = this.$store.state.attractions.find(item => {
+            return item.Id === fethData[0]
+          })
+          this.popularTour = popularTourInfo
+        } catch (e) {
+          console.log("取不到熱門留言資料")
+        } finally {
+          window.removeEventListener("scroll", this.slideMessage)
+        }
       }
     },
     resetPopupData() {
