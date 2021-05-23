@@ -62,7 +62,6 @@ export default {
         )
         this.favoriteCount = favoriteCount
         this.$store.dispatch("setShouldUpdateFavorite", false)
-        console.log("aaaa")
       }
     }
   },

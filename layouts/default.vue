@@ -55,4 +55,7 @@
 .page-leave {
   opacity: 0;
 }
+p {
+  margin: 0 !important;
+}
 </style>

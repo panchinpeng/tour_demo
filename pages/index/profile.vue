@@ -1,58 +1,106 @@
 <template>
   <div class="profileWrapper">
-    <div class="avatarWrap">
-      <img v-if="imgUrl" :src="imgUrl" />
-      <label for="picPic">
-        <font-awesome-icon icon="images" class="pickPic" />
-      </label>
-      <input id="picPic" type="file" accept="image/*" @change="handlePic" />
-    </div>
-    <div class="settingWrap">
-      <div>
+    <div class="personal-setting-wrap">
+      <div class="avatarWrap">
+        <img v-if="imgUrl" :src="imgUrl" />
+        <label for="picPic">
+          <font-awesome-icon icon="images" class="pickPic" />
+        </label>
+        <input id="picPic" type="file" accept="image/*" @change="handlePic" />
+      </div>
+      <div class="settingWrap">
         <ul class="updateInfo">
-          <li
-            :class="{ rotate: active === 'nickname' }"
-            @click="rotateLeave('nickname')"
-          >
-            暱稱
+          <li>
+            <b-form-select
+              v-model="city"
+              :options="cityOptions"
+              @change="userChange"
+            />
+            <tip>
+              當選擇你的居住城市後，將自動優先推薦您這些城市的景點唷!!
+            </tip>
           </li>
-          <li
-            :class="{ rotate: active === 'live' }"
-            @click="rotateLeave('live')"
-          >
-            居住地
+          <li>
+            <b-form-input
+              v-model.trim="nickname"
+              placeholder="您的暱稱"
+              @input="userChange"
+            />
+            <tip>您的暱稱將於評論中顯示出來唷!!</tip>
+          </li>
+          <li class="text-right pt-1">
+            <b-button
+              variant="success"
+              :class="{ 'unsave-warn': isUserChange }"
+              @click="submitSettting"
+            >
+              存檔
+            </b-button>
           </li>
         </ul>
       </div>
-      <!-- <ul>
-        <li>
-          <input type="text" placeholder="暱稱" />
-        </li>
-        <li>
-          <input type="text" placeholder="居住地" />
-        </li>
-      </ul> -->
     </div>
+    <recordStatistics />
     <skeketon v-if="$store.state.showSkeleton" :loading-time="progress" />
   </div>
 </template>
 <script>
 import { uploadAvatar, getAvatarUrl } from "~/components/firebase/picture"
 import skeketon from "~/components/common/skeketon"
+import tip from "~/components/common/tip"
+import recordStatistics from "~/components/profile/recordStatistics"
+
+import {
+  updateUserSetting,
+  getUserSetting
+} from "~/components/firebase/userFunction"
 export default {
   components: {
-    skeketon
+    skeketon,
+    tip,
+    recordStatistics
   },
   data() {
     return {
       imgUrl: null,
       progress: 0,
-      active: null
+      cityOptions: [
+        { value: "請選擇居住城市", text: "請選擇居住城市", disabled: true },
+        { value: "臺北市", text: "臺北市" },
+        { value: "新北市", text: "新北市" },
+        { value: "桃園市", text: "桃園市" },
+        { value: "臺中市", text: "臺中市" },
+        { value: "臺南市", text: "臺南市" },
+        { value: "高雄市", text: "高雄市" },
+        { value: "新竹縣", text: "新竹縣" },
+        { value: "苗栗縣", text: "苗栗縣" },
+        { value: "彰化縣", text: "彰化縣" },
+        { value: "南投縣", text: "南投縣" },
+        { value: "雲林縣", text: "雲林縣" },
+        { value: "嘉義縣", text: "嘉義縣" },
+        { value: "屏東縣", text: "屏東縣" },
+        { value: "宜蘭縣", text: "宜蘭縣" },
+        { value: "花蓮縣", text: "花蓮縣" },
+        { value: "臺東縣", text: "臺東縣" },
+        { value: "澎湖縣", text: "澎湖縣" },
+        { value: "金門縣", text: "金門縣" },
+        { value: "連江縣", text: "連江縣" },
+        { value: "基隆市", text: "基隆市" },
+        { value: "新竹市", text: "新竹市" },
+        { value: "嘉義市", text: "嘉義市" }
+      ],
+      city: "",
+      nickname: "",
+      isUserChange: false
     }
   },
   async created() {
-    let url = await getAvatarUrl(this.$store.state.authentication)
+    const uid = this.$store.state.authentication
+    let url = await getAvatarUrl(uid)
+    let { city, nickname } = await getUserSetting(uid)
     this.imgUrl = url
+    this.city = city
+    this.nickname = nickname
   },
   methods: {
     async handlePic(e) {
@@ -75,15 +123,31 @@ export default {
     },
     rotateLeave(type) {
       this.active = type
+    },
+    userChange() {
+      this.isUserChange = true
+    },
+    async submitSettting() {
+      this.$store.dispatch("setLoading", true)
+      try {
+        await updateUserSetting({
+          city: this.city,
+          nickname: this.nickname,
+          uid: this.$store.state.authentication
+        })
+      } catch (e) {
+        console.log(e)
+      }
+      this.$store.dispatch("setLoading", false)
     }
   }
 }
 </script>
 <style>
 .profileWrapper {
-  max-width: 900px;
-  margin: auto;
   padding-top: 10px;
+  display: flex;
+  flex-direction: column;
 }
 .avatarWrap {
   border-radius: 50%;
@@ -93,7 +157,6 @@ export default {
   margin: auto;
   margin: auto;
   position: relative;
-  animation: border-size 2s ease infinite alternate;
 }
 .avatarWrap > img {
   width: 100%;
@@ -121,7 +184,6 @@ export default {
 .profileWrapper ul {
   list-style-type: none;
   padding: 0;
-  display: flex;
 }
 .profileWrapper input {
   border: 0;
@@ -134,36 +196,21 @@ export default {
 .updateInfo {
   text-align: center;
 }
-.updateInfo li {
-  padding: 5px;
-  border-radius: 50%;
-  background: #3f51b526;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 70px;
-  height: 70px;
+.updateInfo > li {
+  text-align: left;
+  width: 100%;
 }
-.updateInfo li.rotate {
-  position: relative;
-  animation: rotateAndLeave 1s linear forwards;
+.updateInfo > li::after {
+  content: "";
+  clear: both;
+  display: table;
 }
-@keyframes rotateAndLeave {
-  0% {
-    transform: rotate(0deg);
-    left: 0;
-  }
-  100% {
-    transform: rotate(360deg);
-    left: 130%;
-  }
+.personal-setting-wrap {
+  overflow: auto;
+  max-width: 900px;
+  margin: auto;
 }
-@keyframes border-size {
-  0% {
-    border: 8px double white;
-  }
-  100% {
-    border: 0px double white;
-  }
+.unsave-warn {
+  box-shadow: 0px 0px 1px 1px #ef9797;
 }
 </style>

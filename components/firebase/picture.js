@@ -20,7 +20,7 @@ export function uploadAvatar(file, uid, progressHandler = () => {}) {
         try {
           let snapshot = await ref.child(uid).once("value")
           let obj = snapshot.val()
-          if (obj) {
+          if (obj && obj.filename) {
             // 刪除檔案
             await firebase
               .storage()
@@ -29,7 +29,7 @@ export function uploadAvatar(file, uid, progressHandler = () => {}) {
               .delete()
           }
           let url = await uploadTask.snapshot.ref.getDownloadURL()
-          ref.child(uid).set({
+          ref.child(uid).update({
             filename
           })
           resolve(url)
@@ -46,12 +46,11 @@ export function getAvatarUrl(username) {
     const ref = fdb.ref("users")
     ref.child(username).once("value", async snapshot => {
       const obj = snapshot.val()
-      if (obj) {
-        const filename = obj.filename
+      if (obj && obj.filename) {
         const url = await firebase
           .storage()
           .ref()
-          .child(filename)
+          .child(obj.filename)
           .getDownloadURL()
         resolve(url)
       }

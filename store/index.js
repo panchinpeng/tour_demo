@@ -6,27 +6,13 @@ export const state = () => ({
   authentication: false,
   counter: 0,
   username: "",
-  showSkeleton: false
+  showSkeleton: false,
+  loading: false
 })
 
 export const mutations = {
   [ActionTypes.SYNCATTRACTIONS](state, datas) {
-    // state.attractions = datas.XML_Head.Infos.Info
     const tmp = datas
-    // let tmp2 = []
-    // tmp.forEach((item, index) => {
-    //   tmp2[index] = item.Changetime
-    // })
-
-    // let tmp3 = tmp2.slice(0).sort((a, b) => Date.parse(b) - Date.parse(a))
-
-    // let tmp4 = []
-    // tmp3.forEach(item => {
-    //   const tmpIndex = tmp2.indexOf(item)
-    //   tmp4.push(tmp[tmpIndex])
-    //   tmp2[tmpIndex] = null
-    // })
-    // state.attractions = tmp4
     state.attractions = tmp
   },
   [ActionTypes.SETLOGINSTATUS](state, data) {
@@ -43,6 +29,9 @@ export const mutations = {
   },
   [ActionTypes.SHOWSKEKETON](state, data) {
     state.showSkeleton = data
+  },
+  [ActionTypes.SET_LOADING](state, data) {
+    state.loading = !!data
   }
 }
 
@@ -84,6 +73,9 @@ export const actions = {
   },
   setShowSkeketon({ commit }, data) {
     commit(ActionTypes.SHOWSKEKETON, !!data)
+  },
+  setLoading({ commit }, data) {
+    commit(ActionTypes.SET_LOADING, data)
   }
 }
 export const getters = {
@@ -111,9 +103,7 @@ export const getters = {
       let rdNumber = Math.round(Math.random() * size)
       if (!tmpSaveRandomAry.includes(rdNumber)) {
         tmpSaveRandomAry.push(rdNumber)
-
         returnCatchDatas.push(state.attractions[rdNumber])
-        console.log(returnCatchDatas, rdNumber, state.attractions[rdNumber])
       }
     }
     return returnCatchDatas

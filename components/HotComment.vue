@@ -104,7 +104,6 @@ export default {
   methods: {
     showMsgBox(id) {
       const findComment = this.comments.find(item => item.id === id)
-      console.log("findComment", findComment, id)
       this.selectTime = findComment.d
       this.selectContent = findComment.msg
       this.id = id

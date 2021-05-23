@@ -44,7 +44,6 @@ export const fbGetRealCommentData = () => {
     ref.once("value", async snapshot => {
       let publicId = Object.keys(snapshot.val())[0]
       const resultComment = await getTourComment(publicId)
-      // console.log("~~~~", resultComment)
       let returnData = []
       for (let key in resultComment) {
         let data = resultComment[key]
