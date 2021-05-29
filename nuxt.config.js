@@ -118,6 +118,6 @@ export default {
     release: process.env.DEPLOY_ENV === "GH_PAGES"
   },
   server: {
-    host: "192.168.198.1"
+    host: "0.0.0.0"
   }
 }

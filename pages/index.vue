@@ -3,6 +3,7 @@
     <userMenu />
     <KeywordSearch />
     <nuxt-child />
+    <loading />
   </div>
 </template>
 
@@ -14,10 +15,12 @@ import {
   fbSetReadCountAddOne
   // fbSetReadCount
 } from "~/components/firebase/commentData"
+import loading from "~/components/common/loading"
 export default {
   components: {
     KeywordSearch,
-    userMenu
+    userMenu,
+    loading
   },
   async fetch({ store }) {
     let user = await dbUserLogined()

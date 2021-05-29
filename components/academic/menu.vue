@@ -13,6 +13,9 @@
               {{ favoriteCount }}
             </b-badge>
           </li>
+          <li @click="goSetting">
+            個人設定
+          </li>
           <li @click="singout">
             登出
           </li>
@@ -59,7 +62,6 @@ export default {
         )
         this.favoriteCount = favoriteCount
         this.$store.dispatch("setShouldUpdateFavorite", false)
-        console.log("aaaa")
       }
     }
   },
@@ -67,6 +69,7 @@ export default {
     userLogoutCallback() {
       this.drop = false
       this.$store.dispatch("setLoginStatus", false)
+      this.$store.dispatch("setUsername", "")
       alert("已成功登出")
       // prevent Navigating to current location ("/") is not allowed"
       if (this.$route.path !== "/") {
@@ -87,6 +90,10 @@ export default {
       setTimeout(() => {
         this.$router.push("/")
       }, 1000)
+    },
+    goSetting() {
+      this.drop = false
+      this.$router.push("/profile")
     }
   }
 }

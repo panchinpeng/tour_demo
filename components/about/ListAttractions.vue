@@ -179,7 +179,6 @@ export default {
             (this.page - 1) * 10,
             this.page * 10
           )
-          console.log("loading..", pagesAry)
           this.loadFinishData = this.loadFinishData.concat(pagesAry)
           break
       }

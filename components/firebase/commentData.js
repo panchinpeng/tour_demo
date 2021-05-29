@@ -2,6 +2,8 @@ import { fdb } from "~/plugins/firebase.js"
 import firebase from "firebase/app"
 import "firebase/auth"
 import moment from "moment"
+import { commitForUser } from "./userFunction"
+
 const checkLogin = () => {
   return new Promise(resolve => {
     firebase.auth().onAuthStateChanged(user => {
@@ -15,10 +17,21 @@ export const dbUserLogined = async () => {
   return loginStatus
 }
 
-export const fbSetComment = comment => {
+export const fbSetComment = (comment, uid) => {
   if (checkLogin()) {
     const ref = fdb.ref("commentReply")
-    ref.push(comment)
+    ref.push(comment, err => {
+      if (err) {
+        alert("回復訊息出現錯誤")
+        console.log(err)
+      } else {
+        try {
+          commitForUser("replyCount", uid)
+        } catch (err) {
+          console.log("紀錄回覆數錯誤", err)
+        }
+      }
+    })
   }
 }
 export const fbGetReply = id => {
@@ -36,21 +49,23 @@ export const fbGetReply = id => {
 
 export const fbGetRealCommentData = () => {
   // let returnData = []
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const ref = fdb
       .ref("commentRank")
       .orderByValue()
       .limitToLast(1)
     ref.once("value", async snapshot => {
-      let publicId = Object.keys(snapshot.val())[0]
-      const resultComment = await getTourComment(publicId)
-      // console.log("~~~~", resultComment)
-      let returnData = []
-      for (let key in resultComment) {
-        let data = resultComment[key]
-        returnData.push({ id: key, ...data })
+      if (snapshot.val()) {
+        let publicId = Object.keys(snapshot.val())[0]
+        const resultComment = await getTourComment(publicId)
+        let returnData = []
+        for (let key in resultComment) {
+          let data = resultComment[key]
+          returnData.push({ id: key, ...data })
+        }
+        resolve([publicId, returnData])
       }
-      resolve([publicId, returnData])
+      reject(null)
     })
   })
 }
@@ -67,27 +82,47 @@ export const getTourComment = (tid, limit = 12) => {
   })
 }
 export const fbSetRealCommentData = (msg, tourId, u) => {
-  if (checkLogin()) {
-    const ref = fdb.ref("comment")
-    ref
-      .child(tourId)
-      .push({ u, msg, d: moment().format("YYYY-MM-DD HH:mm:ss") })
-
-    pushHotComment(tourId)
-  }
+  return new Promise(resolve => {
+    if (checkLogin()) {
+      const ref = fdb.ref("comment")
+      ref
+        .child(tourId)
+        .push({ u, msg, d: moment().format("YYYY-MM-DD HH:mm:ss") })
+      try {
+        Promise.all([
+          commitForUser("commitCount", u),
+          pushHotComment(tourId)
+        ]).then(() => resolve())
+      } catch (err) {
+        alert("留言失敗")
+        resolve()
+      }
+    }
+  })
 }
+
 // 留言次數
 const pushHotComment = tourId => {
-  const ref = fdb.ref(`commentRank/${tourId}`)
-  // 交易機制
-  ref.transaction(rank => {
-    if (rank) {
-      // 如果有設定過
-      return rank + 1
-    } else {
-      // 如果從未設定過
-      return 1
-    }
+  return new Promise((resolve, reject) => {
+    const ref = fdb.ref(`commentRank/${tourId}`)
+    // 交易機制
+    ref.transaction(
+      rank => {
+        if (rank) {
+          // 如果有設定過
+          return rank + 1
+        } else {
+          // 如果從未設定過
+          return 1
+        }
+      },
+      (err, suc) => {
+        if (err === null && suc) {
+          resolve()
+        }
+        reject(err)
+      }
+    )
   })
 }
 

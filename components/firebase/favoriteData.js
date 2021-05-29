@@ -33,7 +33,6 @@ export const readFavoriteReal = async uid => {
 
 export const readFavoriteCount = async uid => {
   let result = await readFavorite(uid)
-  console.log(result)
   result = Object.keys(result)
   return result.length
 }
