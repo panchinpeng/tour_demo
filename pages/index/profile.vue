@@ -40,7 +40,12 @@
         </ul>
       </div>
     </div>
-    <recordStatistics :commit-count="commitCount" />
+    <recordStatistics
+      :commit-count="commitCount"
+      :reply-count="replyCount"
+      :favorite-count="favoriteCount"
+      :login-count="loginCount"
+    />
     <skeketon v-if="$store.state.showSkeleton" :loading-time="progress" />
   </div>
 </template>
@@ -54,6 +59,7 @@ import {
   updateUserSetting,
   getUserSetting
 } from "~/components/firebase/userFunction"
+import { readFavoriteCount } from "~/components/firebase/favoriteData"
 export default {
   components: {
     skeketon,
@@ -92,17 +98,32 @@ export default {
       city: "",
       nickname: "",
       isUserChange: false,
-      commitCount: 0
+      commitCount: 0,
+      replyCount: 0,
+      favoriteCount: 0,
+      loginCount: 0
     }
   },
   async created() {
     const uid = this.$store.state.authentication
     let url = await getAvatarUrl(uid)
-    let { city, nickname, commitCount } = await getUserSetting(uid)
+    let {
+      city,
+      nickname,
+      commitCount,
+      replyCount,
+      loginCount
+    } = await getUserSetting(uid)
+    console.log(commitCount)
     this.imgUrl = url
     this.city = city
     this.nickname = nickname
     this.commitCount = commitCount
+    this.replyCount = replyCount
+    this.loginCount = loginCount
+    this.favoriteCount = await readFavoriteCount(
+      this.$store.state.authentication
+    )
   },
   methods: {
     async handlePic(e) {

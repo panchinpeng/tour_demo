@@ -7,6 +7,7 @@ export const userLogin = (username, password, sucFun, failFun) => {
     .auth()
     .signInWithEmailAndPassword(username, password)
     .then(user => {
+      commitForUser("loginCount", user.user.uid)
       sucFun(user.user.uid)
     })
     .catch(error => {
@@ -37,5 +38,25 @@ export const getUserSetting = uid => {
       .ref(`users/${uid}`)
       .once("value")
       .then(snapshot => resolve(snapshot.val()))
+  })
+}
+// 紀錄使用者數量
+export const commitForUser = (action, uid) => {
+  return new Promise((resolve, reject) => {
+    console.log("rrrr", `users/${uid}/${action}`)
+    fdb.ref(`users/${uid}/${action}`).transaction(
+      count => {
+        if (count === null) {
+          return 1
+        }
+        return count + 1
+      },
+      (err, suc) => {
+        if (err === null && suc) {
+          resolve()
+        }
+        reject(err)
+      }
+    )
   })
 }

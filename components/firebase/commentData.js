@@ -2,6 +2,8 @@ import { fdb } from "~/plugins/firebase.js"
 import firebase from "firebase/app"
 import "firebase/auth"
 import moment from "moment"
+import { commitForUser } from "./userFunction"
+
 const checkLogin = () => {
   return new Promise(resolve => {
     firebase.auth().onAuthStateChanged(user => {
@@ -15,10 +17,21 @@ export const dbUserLogined = async () => {
   return loginStatus
 }
 
-export const fbSetComment = comment => {
+export const fbSetComment = (comment, uid) => {
   if (checkLogin()) {
     const ref = fdb.ref("commentReply")
-    ref.push(comment)
+    ref.push(comment, err => {
+      if (err) {
+        alert("回復訊息出現錯誤")
+        console.log(err)
+      } else {
+        try {
+          commitForUser("replyCount", uid)
+        } catch (err) {
+          console.log("紀錄回覆數錯誤", err)
+        }
+      }
+    })
   }
 }
 export const fbGetReply = id => {
@@ -76,9 +89,10 @@ export const fbSetRealCommentData = (msg, tourId, u) => {
         .child(tourId)
         .push({ u, msg, d: moment().format("YYYY-MM-DD HH:mm:ss") })
       try {
-        Promise.all([commitForUser(u), pushHotComment(tourId)]).then(() =>
-          resolve()
-        )
+        Promise.all([
+          commitForUser("commitCount", u),
+          pushHotComment(tourId)
+        ]).then(() => resolve())
       } catch (err) {
         alert("留言失敗")
         resolve()
@@ -86,25 +100,7 @@ export const fbSetRealCommentData = (msg, tourId, u) => {
     }
   })
 }
-// 每個人的留言數
-const commitForUser = uid => {
-  return new Promise((resolve, reject) => {
-    fdb.ref(`users/${uid}/commitCount`).transaction(
-      count => {
-        if (count === null) {
-          return 1
-        }
-        return count + 1
-      },
-      (err, suc) => {
-        if (err === null && suc) {
-          resolve()
-        }
-        reject(err)
-      }
-    )
-  })
-}
+
 // 留言次數
 const pushHotComment = tourId => {
   return new Promise((resolve, reject) => {

@@ -108,11 +108,14 @@ export default {
     },
 
     sendMsg() {
-      fbSetComment({
-        d: monent().format("YYYY-MM-DD HH:mm:ss"),
-        msg: this.message,
-        id: this.id
-      })
+      fbSetComment(
+        {
+          d: monent().format("YYYY-MM-DD HH:mm:ss"),
+          msg: this.message,
+          id: this.id
+        },
+        this.$store.state.authentication
+      )
       this.message = ""
     },
     resetData() {
