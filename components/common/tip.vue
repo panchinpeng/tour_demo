@@ -1,6 +1,6 @@
 <template>
   <div class="tip-wrap">
-    <img src="/cat.png" alt="animal-cat" class="animal" />
+    <img src="cat.png" alt="animal-cat" class="animal" />
     <p>
       <slot />
     </p>
