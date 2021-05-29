@@ -58,4 +58,37 @@
 p {
   margin: 0 !important;
 }
+/* scrollbar 區域背景 */
+body::-webkit-scrollbar {
+  background-color: #80898639;
+  width: 10px;
+}
+/* 上下兩邊 */
+/* body::-webkit-scrollbar-button {
+  background-color: blue;
+} */
+/** 中間空白區域包含滑動塊 */
+body::-webkit-scrollbar-track {
+  border-radius: 30px;
+  background-color: rgba(10, 10, 10, 0.4);
+}
+/** 中間空白區域不含滑動塊 */
+/* body::-webkit-scrollbar-track-piece {
+  background-color: lightcoral;
+  width: 5px;
+} */
+/** 滾動條中跟著滑動的東西 */
+body::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  transition: all 5s;
+}
+body:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(86, 83, 83, 0.183);
+  transition: all 5s;
+}
+
+/** 水平垂直scrollbar相交的區域 */
+/* body::-webkit-scrollbar-corner {
+  background-color: black;
+} */
 </style>
