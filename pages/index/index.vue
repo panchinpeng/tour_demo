@@ -41,7 +41,6 @@ export default {
   mounted() {
     if (this.$store.state.attractions.length === 0) {
       this.$store.dispatch("syncAttractions")
-      console.log("index mount")
     }
   }
 }

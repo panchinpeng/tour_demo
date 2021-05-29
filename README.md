@@ -9,7 +9,7 @@ https://panchinpeng.github.io/tour_demo/
 輸入景點關鍵字，即能查到相關景點
 ##### 隨機景點
 每次載入頁面皆會隨間推薦景點
-##### 地區找景點
+##### 地區找景點****
 透過縣市找尋景點
 ##### 熱門留言
 景點留言回覆功能，目前可對該景點評論進行回復
@@ -31,11 +31,18 @@ https://panchinpeng.github.io/tour_demo/
 ##### 當透過搜尋功能或者首頁地區找景點進入列表頁，上方會顯示所有"搜尋相關結果"，任何一個標籤均能做點選更精準的查詢
 ![image](https://github.com/panchinpeng/tour_demo/blob/master/readmePic/1.PNG)
 
+#### 個人設定
+1. 提供個人頭像設定
+2. 提供暱稱及居住縣市設定，以方便推薦景點及回覆時顯示暱稱
+3. 提供統計個人4種資訊
+![image](https://github.com/panchinpeng/tour_demo/blob/master/readmePic/3.PNG)
+
 #### notice:
 目前以下功能需登入才能存取:
 1. 熱門留言的回覆功能
 2. 景點列表的收藏功能
 3. 選單收藏景點
+4. 個人資料設定
 
 
 

@@ -71,7 +71,6 @@ export default {
     this.favoriteContent = await readFavoriteReal(
       this.$store.state.authentication
     )
-    console.log("size: ", this.prepareToMap)
   },
   methods: {
     remove() {

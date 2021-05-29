@@ -90,7 +90,6 @@ export default {
     findData() {
       let keyword = this.keyword
       let data = this.$store.state.attractions.filter(item => {
-        // console.log(item.Keyword)
         return (
           (item.Add && item.Add.indexOf(keyword) > -1) ||
           (item.Keyword && item.Keyword.indexOf(keyword) > -1) ||

@@ -105,14 +105,11 @@ export default {
         this.datasList.splice(oldIndex, 1)
         this.datasList.splice(findDist, 0, sourceElement.dataset.dist)
       }
-      console.log(findDist)
       event.target.classList.remove("dragging")
     },
     dragstart(dataId) {
-      // console.log(event, dataId)
       event.dataTransfer.setData("unique", dataId)
       event.target.classList.add("dragging")
-      // e.dataTransfer.setData()
     },
     dragend() {
       event.target.classList.remove("dragging")
