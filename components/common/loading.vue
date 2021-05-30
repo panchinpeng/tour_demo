@@ -1,6 +1,6 @@
 <template>
   <div v-show="show" class="loading-wrap">
-    <img src="/loading.svg" alt="" />
+    <img src="loading.svg" alt="" />
   </div>
 </template>
 <script>
