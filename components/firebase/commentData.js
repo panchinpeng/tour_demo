@@ -3,6 +3,7 @@ import firebase from "firebase/app"
 import "firebase/auth"
 import moment from "moment"
 import { commitForUser } from "./userFunction"
+import { getAvatarUrl } from "./picture"
 
 const checkLogin = () => {
   return new Promise(resolve => {
@@ -20,7 +21,7 @@ export const dbUserLogined = async () => {
 export const fbSetComment = (comment, uid) => {
   if (checkLogin()) {
     const ref = fdb.ref("commentReply")
-    ref.push(comment, err => {
+    ref.push({ ...comment, uid }, err => {
       if (err) {
         alert("回復訊息出現錯誤")
         console.log(err)
@@ -36,12 +37,21 @@ export const fbSetComment = (comment, uid) => {
 }
 export const fbGetReply = id => {
   let returnData = []
+  const tmpSaveUserAvatar = {}
   const ref = fdb.ref("commentReply")
   ref
     .orderByChild("id")
     .equalTo(id)
-    .on("child_added", snapshot => {
-      returnData.push({ key: snapshot.key, ...snapshot.val() })
+    .on("child_added", async snapshot => {
+      const data = snapshot.val()
+      if (tmpSaveUserAvatar[data.uid]) {
+        data.avatar = tmpSaveUserAvatar[data.uid]
+      } else {
+        data.avatar = await getAvatarUrl(data.uid)
+        tmpSaveUserAvatar[data.uid] = data.avatar
+      }
+
+      returnData.push({ key: snapshot.key, ...data })
     })
 
   return returnData
@@ -75,9 +85,22 @@ export const getTourComment = (tid, limit = 12) => {
     .ref(`comment/${tid}`)
     .orderByChild("d")
     .limitToLast(limit)
+  const tmpSaveUserAvatar = {}
   return new Promise(resolve => {
-    ref.on("value", snapshot => {
-      resolve(snapshot.val())
+    ref.on("value", async snapshot => {
+      const resultComment = snapshot.val()
+
+      for (let key in resultComment) {
+        let data = resultComment[key]
+        // cache 圖片，避免每次都去讀圖片
+        if (tmpSaveUserAvatar[data.u]) {
+          data.avatar = tmpSaveUserAvatar[data.u]
+        } else {
+          data.avatar = await getAvatarUrl(data.u)
+          tmpSaveUserAvatar[data.u] = data.avatar
+        }
+      }
+      resolve(resultComment)
     })
   })
 }

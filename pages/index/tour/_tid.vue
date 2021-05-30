@@ -22,17 +22,14 @@
           所有回覆:
         </div>
         <ul v-if="commentData && commentData.length > 0" class="comment-ul">
-          <li
-            v-for="(item, index) in commentData"
-            :key="item.key"
-            :class="{ right: index % 2 === 1 }"
-          >
+          <li v-for="item in commentData" :key="item.key">
             <div class="comment-content">
               {{ item.msg }}
             </div>
-            <div class="icon-user">
-              <font-awesome-icon icon="user-tie" class="no-reply" />
-            </div>
+            <avatar
+              :style="{ position: 'relative', textAlign: 'right' }"
+              :url="item.avatar"
+            />
           </li>
         </ul>
         <div v-else class="no-reply-wrap">
@@ -45,9 +42,13 @@
 
 <script>
 import { getTourComment } from "~/components/firebase/commentData"
+import avatar from "~/components/common/avatar"
 export default {
   middleware: ["storeDataVerify"],
   name: "TourDisplay",
+  components: {
+    avatar
+  },
   data() {
     return {
       attraction: null,
@@ -94,23 +95,11 @@ export default {
 
   border-bottom: 1px solid #00000014;
 }
-.comment-ul > li.right {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
 
-.comment-ul > li.right > .icon-user {
-  align-self: flex-start;
-}
 .comment-content {
   padding-right: 30px;
 }
-.comment-ul > li.right > .comment-content {
-  align-self: flex-end;
-  padding-left: 30px;
-  padding-right: 0;
-}
+
 .icon-user {
   text-align: right;
 }
@@ -123,7 +112,7 @@ export default {
 .no-reply-wrap {
   width: 100%;
   height: 200px;
-  background-image: url(/sleep.png);
+  background-image: url("~static/sleep.png");
   background-position: top center;
   background-repeat: no-repeat;
   background-color: rgba(237, 236, 236, 0.32941);

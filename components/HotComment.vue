@@ -41,6 +41,7 @@
                       <div class="time-wrap">
                         {{ item.d }}
                       </div>
+                      <avatar :url="item.avatar" />
                     </div>
                   </div>
                 </div>
@@ -64,12 +65,14 @@
 <script>
 import Popup from "~/components/Popup.vue"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-vue"
+import avatar from "~/components/common/avatar"
 
 import { fbGetRealCommentData } from "~/components/firebase/commentData.js"
 export default {
   components: {
     Popup,
-    OverlayScrollbarsComponent
+    OverlayScrollbarsComponent,
+    avatar
   },
   data() {
     return {
@@ -135,6 +138,7 @@ export default {
       ) {
         try {
           let fethData = await fbGetRealCommentData()
+          console.log(fethData, "fethData")
           this.comments = fethData[1]
           // 搜尋景點名稱
           let popularTourInfo = this.$store.state.attractions.find(item => {
