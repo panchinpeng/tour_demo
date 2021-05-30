@@ -8,7 +8,12 @@
           rows="3"
           max-rows="6"
         />
-        <b-button variant="primary" class="float-right" @click="sendMsg">
+        <b-button
+          variant="primary"
+          class="float-right"
+          :disabled="commit === ''"
+          @click="sendMsg"
+        >
           送出
         </b-button>
       </b-col>
