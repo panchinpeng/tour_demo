@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[10],{452:function(t,n,e){"use strict";e.r(n);var o={components:{ListAttractions:e(352).a}},c=e(25),component=Object(c.a)(o,(function(){var t=this.$createElement,n=this._self._c||t;return n("div",[n("ListAttractions",{attrs:{action:"random"}})],1)}),[],!1,null,null,null);n.default=component.exports}}]);

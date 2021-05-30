@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[8],{450:function(t,n,e){"use strict";e.r(n);var c={components:{ListAttractions:e(352).a}},o=e(25),component=Object(o.a)(c,(function(){var t=this.$createElement,n=this._self._c||t;return n("div",[n("ListAttractions",{attrs:{action:"area"}})],1)}),[],!1,null,null,null);n.default=component.exports}}]);
