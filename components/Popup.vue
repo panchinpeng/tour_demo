@@ -21,9 +21,7 @@
           <div class="reply-time">
             {{ reply.d }}
           </div>
-          <div class="user-img">
-            <font-awesome-icon icon="user-circle" />
-          </div>
+          <avatar :url="reply.avatar" />
         </div>
       </div>
       <div class="reply-wrap">
@@ -52,8 +50,12 @@
 </template>
 <script>
 import { fbSetComment, fbGetReply } from "~/components/firebase/commentData.js"
+import avatar from "~/components/common/avatar"
 import monent from "moment"
 export default {
+  components: {
+    avatar
+  },
   props: {
     boxName: {
       default: "",
